@@ -1,0 +1,39 @@
+# Virtual Environment
+fraud_env/
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment
+.env
+
+# VS Code
+.vscode/
+
+# Django
+db.sqlite3
+
+# Uploads
+uploads/
+media/
+
+# Training data
+training/
+
+# AI models
+models/
+*.safetensors
+*.bin
+*.pth
+*.pt
+*.ckpt
+
+# Logs
+*.log
+
+# Jupyter
+.ipynb_checkpoints/

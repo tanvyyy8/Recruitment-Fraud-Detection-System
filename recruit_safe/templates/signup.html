@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <title>Sign Up | RecruitSafe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      body {
+        height: 100vh;
+        display: flex;
+        background-color: #ffffff;
+      }
+
+      .left {
+        width: 50%;
+        background-color: #f3f6fb;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .left img {
+        max-width: 90%;
+      }
+
+      .right {
+        width: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .content {
+        width: 380px;
+        text-align: center;
+      }
+
+      h1 {
+        font-size: 36px;
+        font-weight: 800;
+      }
+
+      .subtitle {
+        color: #555;
+        margin-bottom: 24px;
+      }
+
+      .box {
+        border: 1.5px solid #e5e7eb;
+        border-radius: 18px;
+        padding: 36px 28px;
+        background: #fff;
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+      }
+
+      form {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      input {
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1.5px solid #d1d5db;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #2f80ed;
+      }
+
+      .password-rule {
+        font-size: 13px;
+        text-align: left;
+        display: none;
+      }
+
+      .password-rule.invalid {
+        color: red;
+      }
+      .password-rule.valid {
+        color: green;
+      }
+
+      button {
+        margin-top: 12px;
+        padding: 14px;
+        border-radius: 999px;
+        border: none;
+        background: #000;
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .error {
+        color: red;
+        font-size: 13px;
+        margin-top: 10px;
+      }
+
+      .footer {
+        margin-top: 22px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="left">
+      <!-- <img src="../static/images/auth-illustration.png"> -->
+      <img src="{% static 'images/auth-illustration.png' %}" />
+    </div>
+
+    <div class="right">
+      <div class="content">
+        <h1>Create account</h1>
+        <p class="subtitle">Sign up to get started</p>
+
+        <div class="box">
+          <form method="POST">
+            {% csrf_token %}
+
+            <input
+              type="text"
+              name="username"
+              placeholder="Username"
+              required
+            />
+            <input type="email" name="email" placeholder="Email" required />
+            <input
+              type="password"
+              name="password"
+              placeholder="Password"
+              required
+            />
+
+            <p id="passwordRule" class="password-rule">
+              Password must be at least 8 characters
+            </p>
+
+            <button type="submit">Sign Up</button>
+            <p class="error" id="errorMsg"></p>
+          </form>
+        </div>
+
+        <p class="footer">
+          Already have an account? <a href="/login">Login</a>
+        </p>
+      </div>
+    </div>
+
+    <script>
+      function checkPassword() {
+        const pwd = password.value;
+        passwordRule.style.display = "block";
+
+        if (pwd.length >= 8) {
+          passwordRule.textContent = "Password looks good ✓";
+          passwordRule.className = "password-rule valid";
+        } else {
+          passwordRule.textContent = "Password must be at least 8 characters";
+          passwordRule.className = "password-rule invalid";
+        }
+      }
+
+      document
+        .getElementById("signupForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          if (password.value.length < 8) {
+            errorMsg.textContent = "Password too short";
+            return;
+          }
+
+          const user = {
+            username: username.value,
+            email: email.value,
+            password: password.value,
+          };
+
+          // localStorage.setItem("recruitSafeUser", JSON.stringify(user));
+          // window.location.href = "login.html";
+        });
+    </script>
+  </body>
+</html>

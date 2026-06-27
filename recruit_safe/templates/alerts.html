@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Alerts | RecruitSafe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #F7F8FA;
+            color: #000;
+            display: flex;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar .logo {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            padding-left: 35px;
+            padding-top: 8px;
+        }
+
+        .nav a {
+            display: block;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #111;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .nav a.active,
+        .nav a:hover {
+            background: #F3F4F6;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        /* ================= THEME TOGGLE ================= */
+        .theme-toggle {
+            width: 170px;
+            height: 44px;
+            padding: 6px;
+            border-radius: 999px;
+            background: #E5E7EB;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+
+        .toggle-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+
+        }
+
+        .toggle-circle svg {
+            width: 16px;
+            height: 16px;
+            stroke: #111;
+            fill: none;
+        }
+
+        .toggle-text {
+            font-size: 14px;
+            font-weight: 600;
+            pointer-events: none;
+            color: #111;
+            padding: 0 42px;
+            /* ✅ THIS creates space from the circle */
+        }
+
+
+
+        /* ICON VISIBILITY */
+        #moonIcon {
+            display: none;
+        }
+
+        /* ================= DARK MODE ================= */
+        body.dark {
+            background-color: #020203;
+            color: #F5F5F7;
+        }
+
+        body.dark .sidebar {
+            background: #1C1C22;
+            border: 1px solid #26262E;
+            box-shadow: none;
+        }
+
+        body.dark .nav a {
+            color: #9CA3AF;
+        }
+
+        body.dark .nav a.active,
+        body.dark .nav a:hover {
+            background: #26262E;
+            color: #F5F5F7;
+        }
+
+        body.dark .theme-toggle {
+            background: #111827;
+            width: 160px;
+            /* keeps enough space for “Night mode” */
+        }
+
+        body.dark .toggle-circle {
+            transform: translateX(116px);
+            /* slightly less than before */
+        }
+
+
+        body.dark .toggle-text {
+            color: #ffffff;
+
+        }
+
+
+        body.dark .toggle-circle svg {
+            stroke: #111;
+        }
+
+
+
+        body.dark #sunIcon {
+            display: none;
+        }
+
+        body.dark #moonIcon {
+            display: block;
+        }
+
+        /* ================= MAIN ================= */
+        .main {
+            flex: 1;
+            margin: 20px 20px 20px 0;
+            padding: 40px;
+        }
+
+        .placeholder {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 80px;
+            text-align: center;
+            color: #6B7280;
+            font-size: 16px;
+            border: 1px dashed #D1D5DB;
+        }
+
+        body.dark .placeholder {
+            background: #1C1C22;
+            border-color: #26262E;
+            color: #9CA3AF;
+        }
+
+        /* keep text in one line ALWAYS */
+        .toggle-text {
+            white-space: nowrap;
+        }
+
+        /* ensure enough width so "Night mode" never wraps */
+        .theme-toggle {
+            min-width: 170px;
+            /* adjust if you want slightly smaller/larger */
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+
+            width: 170px;
+            /* fixed width = no wrapping */
+            height: 44px;
+
+            padding: 6px 10px;
+            border-radius: 999px;
+
+            background: #E5E7EB;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+            /* 🔥 CRITICAL */
+            transition: transform 0.3s ease;
+        }
+
+        body.dark .theme-toggle {
+            background: #767676;
+        }
+
+        body.dark .theme-toggle {
+            flex-direction: row-reverse;
+            /* circle moves right */
+        }
+
+        .toggle-circle {
+            margin-left: 6px;
+        }
+
+        /* ================= ALERTS ================= */
+
+.alerts-header {
+    margin-bottom: 24px;
+    padding-top: 30px;
+}
+
+.alerts-title {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.alerts-subtitle {
+    font-size: 13px;
+    color: #6B7280;
+    margin-top: 6px;
+}
+
+/* Alerts list */
+.alerts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 900px;
+}
+
+/* Alert item */
+.alert-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 16px 18px;
+
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+.alert-icon {
+    font-size: 22px;
+}
+
+.alert-content h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.alert-content p {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+.alert-time {
+    margin-left: auto;
+    font-size: 12px;
+    color: #9CA3AF;
+}
+
+/* Alert types */
+.alert-danger {
+    border-left: 5px solid #EF4444;
+}
+
+.alert-warning {
+    border-left: 5px solid #F59E0B;
+}
+
+.alert-info {
+    border-left: 5px solid #3B82F6;
+}
+
+.alert-success {
+    border-left: 5px solid #22C55E;
+}
+
+/* ================= DARK MODE ================= */
+
+body.dark .alerts-subtitle {
+    color: #9CA3AF;
+}
+
+body.dark .alert-item {
+    background: #1C1C22;
+    box-shadow: none;
+}
+
+body.dark .alert-content p {
+    color: #9CA3AF;
+}
+
+body.dark .alert-time {
+    color: #9CA3AF;
+}
+
+    </style>
+</head>
+
+<body>
+
+
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">RecruitSafe</div>
+
+<nav class="nav">
+
+<a href="/dashboard">Dashboard</a>
+<a href="/manage-users">Manage Users</a>
+<a href="/analyze">Analyze Jobs</a>
+<a href="/history">History</a>
+<a href="/alerts" class="active">Alerts</a>
+<a href="/settings">Settings</a>
+
+</nav>
+
+
+        <div class="sidebar-footer">
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <div class="toggle-circle">
+                    <!-- SUN -->
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+
+                    <!-- MOON -->
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </div>
+
+                <span class="toggle-text" id="toggleText">Day mode</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- -------------------------------------------------------------------------------------------------------------------------------------------- -->
+
+    <!-- MAIN CONTENT -->
+<main class="main">
+
+    <!-- Alerts Header -->
+    <div class="alerts-header">
+        <h2 class="alerts-title">Alerts</h2>
+        <p class="alerts-subtitle">Important recruitment fraud warnings</p>
+    </div>
+
+    <!-- Alerts List -->
+    <div class="alerts-list">
+
+        <div class="alert-item alert-danger">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <h4>High-Risk Job Detected</h4>
+                <p>This job posting shows strong indicators of recruitment fraud.</p>
+            </div>
+            <span class="alert-time">Just now</span>
+        </div>
+
+        <div class="alert-item alert-warning">
+            <div class="alert-icon">💸</div>
+            <div class="alert-content">
+                <h4>Payment Request Found</h4>
+                <p>Legitimate employers never ask for registration or training fees.</p>
+            </div>
+            <span class="alert-time">5 min ago</span>
+        </div>
+
+        <div class="alert-item alert-info">
+            <div class="alert-icon">🌐</div>
+            <div class="alert-content">
+                <h4>Suspicious Email Domain</h4>
+                <p>Recruiter email does not match the company’s official domain.</p>
+            </div>
+            <span class="alert-time">Today</span>
+        </div>
+
+        <div class="alert-item alert-success">
+            <div class="alert-icon">✔️</div>
+            <div class="alert-content">
+                <h4>Job Marked as Genuine</h4>
+                <p>No major fraud indicators detected in this job posting.</p>
+            </div>
+            <span class="alert-time">Yesterday</span>
+        </div>
+
+    </div>
+
+</main>
+
+    <script>
+        /* ===== THEME LOGIC ===== */
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle("dark");
+            document.getElementById("toggleText").textContent =
+                isDark ? "Night mode" : "Day mode";
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+        }
+
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark");
+            document.getElementById("toggleText").textContent = "Night mode";
+        }
+    </script>
+
+</body>
+
+</html>

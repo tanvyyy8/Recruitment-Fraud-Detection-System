@@ -1,0 +1,1952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard | RecruitSafe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* =========================
+   THEME VARIABLES
+========================= */
+
+/* Light Theme (default) */
+:root {
+    --bg-main: #f9fafb;
+    --bg-card: #ffffff;
+    --bg-sidebar: #ffffff;
+
+    --text-primary: #111827;
+    --text-secondary: #6b7280;
+
+    --border-color: #e5e7eb;
+
+    --success: #16a34a;
+    --danger: #dc2626;
+    --warning: #d97706;
+}
+
+/* Dark Theme */
+body.dark-theme {
+    --bg-main: #0f172a;
+    --bg-card: #020617;
+    --bg-sidebar: #020617;
+
+    --text-primary: #e5e7eb;
+    --text-secondary: #9ca3af;
+
+    --border-color: #1e293b;
+
+    --success: #22c55e;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background-color: #F7F8FA;
+  color: #000;
+  display: flex;
+}
+
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  border-radius: 28px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+.sidebar .logo {
+  font-size: 22px;
+  font-weight: 800;
+  margin-bottom: 40px;
+  padding-left: 35px;
+  padding-top: 8px;
+}
+
+.nav a {
+  display: block;
+  padding: 12px 16px;
+  margin-bottom: 8px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+
+.nav a.active,
+.nav a:hover {
+  background: #F3F4F6;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+}
+
+.logout-btn {
+  width: 100%;
+  padding: 12px;
+  border-radius: 999px;
+  border: 1px solid #000;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* MAIN */
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin: 20px 20px 20px 0;
+}
+
+/* TOP BAR – CLEAN (NO BG) */
+.topbar {
+  display: flex;
+  align-items: center;
+  gap: 200px;
+  padding: 30px 10px 30px 20px;
+}
+
+/* WELCOME INSIDE TOP BAR */
+.top-welcome {
+  font-size: 26px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.top-welcome span {
+  font-size: 18px;
+  font-weight: 400;
+  color: #555;
+  display: block;
+  margin-top: 4px;
+}
+
+/* SEARCH */
+.search input {
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid #D1D5DB;
+  width: 270px;
+  height: 30px;
+}
+
+/* PROFILE */
+.profile {
+  margin-left: auto;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* CONTENT */
+.content {
+  padding: 20px 40px 40px;
+}
+
+.dashboard-placeholder {
+  margin-top: 40px;
+  padding: 100px 40px;
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px dashed #D1D5DB;
+  text-align: center;
+  color: #6B7280;
+  font-size: 16px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.profile-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1.5px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F3F4F6;
+
+  /* PUSH TO EXTREME RIGHT */
+  margin-left: auto;
+}
+
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20%;
+}
+
+/* THEME TOGGLE */
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 148px;
+  height: 50px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #E5E7EB;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-left: 15px;
+  margin-bottom: 10px;
+}
+
+/* SLIDING KNOB */
+.toggle-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+/* TEXT */
+.toggle-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+/* NIGHT MODE */
+body.dark .theme-toggle {
+  background: #000000;
+  flex-direction: row-reverse; /* 🔥 THIS IS THE KEY */
+}
+
+body.dark .toggle-text {
+  color: #ffffff;
+}
+
+/* ================= DARK THEME ================= */
+/* ================= REFINED DARK THEME ================= */
+body.dark {
+  background-color: #020203; /* deep SaaS black */
+  color: #F5F5F7;
+}
+
+/* MAIN */
+body.dark .main {
+  background-color: #0B0B0F;
+}
+
+/* SIDEBAR */
+body.dark .sidebar {
+  background: #1f1e1e;
+  border: 1px solid #26262E;
+  box-shadow: none;
+}
+
+body.dark .nav a {
+  color: #9CA3AF;
+}
+
+body.dark .nav a.active,
+body.dark .nav a:hover {
+  background: #1C1C22;
+  color: #F5F5F7;
+}
+
+/* TOP BAR TEXT */
+body.dark .top-welcome {
+  color: #F5F5F7;
+}
+
+body.dark .top-welcome span {
+  color: #9CA3AF;
+}
+
+/* SEARCH BAR */
+body.dark .search input {
+  background: #141418;
+  border: 1.5px solid #26262E;
+  color: #F5F5F7;
+}
+
+body.dark .search input::placeholder {
+  color: #9CA3AF;
+}
+
+/* PROFILE AVATAR */
+body.dark .profile-avatar {
+  background: #141418;
+  border-color: #929292;
+}
+
+/* LOGOUT BUTTON */
+body.dark .logout-btn {
+  color: #9CA3AF;
+  border-color: #26262E;
+}
+
+body.dark .logout-btn:hover {
+  background: #1C1C22;
+  color: #F5F5F7;
+}
+
+/* ===== DARK MODE TOGGLE (REFINED) ===== */
+body.dark .theme-toggle {
+  background: #767676;
+  border: 1px solid #26262E;
+}
+
+body.dark .toggle-circle {
+  background: #F5F5F7; /* white knob */
+}
+
+body.dark .toggle-text {
+  color: #F5F5F7;
+}
+
+/* TOGGLE ICON */
+.toggle-circle svg {
+  color: #0B0B0F; /* dark icon on white knob */
+}
+
+.topbar {
+  display: flex;
+  align-items: center;        /* 🔥 vertical centering */
+  padding: 24px 20px;
+}
+
+.top-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;        /* 🔥 keeps all in one line */
+  gap: 18px;
+}
+.search input {
+  height: 36px;
+}
+
+.theme-toggle {
+  height: 40px;
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+}
+
+/* ===== PROFILE DROPDOWN ===== */
+.profile-wrapper {
+  position: relative;
+}
+
+.profile-menu {
+  position: absolute;
+  top: 48px;
+  right: 0;
+  width: 200px;
+  background: #ffffff;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  padding: 10px 0;
+  display: none;
+  z-index: 100;
+}
+
+.profile-menu a,
+.profile-info {
+  display: block;
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #111;
+  text-decoration: none;
+}
+
+.profile-info {
+  font-size: 13px;
+  color: #6B7280;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.profile-menu a:hover {
+  background: #F3F4F6;
+}
+
+/* DARK MODE */
+body.dark .profile-menu {
+  background: #1C1C22;
+  border: 1px solid #26262E;
+}
+
+body.dark .profile-menu a,
+body.dark .profile-info {
+  color: #F5F5F7;
+}
+
+body.dark .profile-menu a:hover {
+  background: #26262E;
+}
+
+/* Common dropdown item style */
+.dropdown-item {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;          /* same font for Profile & Logout */
+  color: #111;
+  cursor: pointer;
+}
+
+/* Logout row layout */
+.logout-item {
+  display: inline-flex;      /* 🔥 keeps icon close */
+  align-items: center;
+  gap: 6px;                  /* icon immediately next to text */
+}
+
+/* Text consistency */
+.item-text {
+  font: inherit;
+}
+
+/* Icon sizing */
+.logout-item svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* Dark mode */
+body.dark .logout-item svg {
+  color: #F87171;
+}
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-top: 30px;
+}
+
+/*-----------------------------------------------------------------------------------------------------------------------------------------*/
+
+/* =========================
+   DASHBOARD CHART LAYOUT
+========================= */
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* ALWAYS 2 in one row */
+    gap: 20px;
+    width: 100%;
+}
+
+/* Chart card */
+.chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px;
+    height: 300px;                 /* NORMAL, readable size */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Chart title */
+.chart-card h4 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+/* Canvas size control */
+.chart-card canvas {
+    flex: 1;
+    max-height: 220px;             /* prevents oversized charts */
+}
+
+/* Line chart — full row below */
+.chart-card.full-width {
+    grid-column: span 2;
+    min-height: 480px;
+    padding: 28px;
+    border-radius: 20px;
+}
+
+/* =========================
+   RESPONSIVE (NO SCROLL)
+========================= */
+
+@media (max-width: 900px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;   /* stack on small screens */
+    }
+
+    .chart-card.full-width {
+        grid-column: span 1;
+    }
+}
+
+/* Chart card background adapts automatically */
+.chart-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+/* Chart headings */
+.chart-card h4 {
+    color: var(--text-primary);
+}
+
+/* ================= ANALYSIS TABS ================= */
+
+.analysis-tabs{
+display:flex;
+gap:12px;
+margin:20px 40px;
+}
+
+.tab-btn{
+padding:8px 18px;
+border-radius:999px;
+border:1px solid #E5E7EB;
+background:#ffffff;
+cursor:pointer;
+font-weight:600;
+font-size:14px;
+}
+
+.tab-btn.active{
+background:#111827;
+color:#ffffff;
+border:none;
+}
+
+body.dark .tab-btn{
+background:#141418;
+border-color:#26262E;
+color:#9CA3AF;
+}
+
+body.dark .tab-btn.active{
+background:#ffffff;
+color:#000;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav a i {
+  width: 18px;
+  height: 18px;
+  color: #111;
+}
+
+/* ================= PREMIUM TABLE SECTION ================= */
+
+.activity-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.activity-table thead tr {
+    border-bottom: 1px solid #E5E7EB;
+}
+
+.activity-table th {
+    text-align: left;
+    padding: 16px 12px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.activity-table td {
+    padding: 18px 12px;
+    font-size: 15px;
+    color: #374151;
+}
+
+.activity-table tbody tr {
+    border-bottom: 1px solid #F3F4F6;
+}
+
+.activity-table tbody tr:hover {
+    background: #FAFAFA;
+}
+
+.model-panel {
+    margin-top: 40px;
+}
+
+.model-cards {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 18px;
+}
+
+.model-box {
+    flex: 1;
+    min-width: 220px;
+    padding: 24px;
+    border: 1px solid #E5E7EB;
+    border-radius: 18px;
+    background: #ffffff;
+    transition: 0.3s;
+}
+
+.model-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+.model-box h5 {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.model-box p {
+    font-size: 15px;
+    color: #6B7280;
+    margin: 0;
+}
+
+/* ================= PREMIUM FULL COLOR CARDS ================= */
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+    margin: 24px 40px;
+}
+
+.summary-card {
+    border-radius: 22px;
+    padding: 28px;
+    transition: 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+    border: none;
+}
+
+.summary-card:hover {
+    transform: translateY(-4px);
+}
+
+/* Heading */
+.summary-card h5 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 14px;
+    color: rgba(17, 24, 39, 0.75);
+    letter-spacing: 0.3px;
+}
+
+/* Main Number */
+.summary-card h2 {
+    font-size: 40px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+/* Bottom text */
+.summary-card p {
+    font-size: 13px;
+    color: rgba(17, 24, 39, 0.65);
+    margin: 0;
+}
+
+/* Premium Full Background Colors */
+
+.total-card {
+    background: #E8EEF9;
+}
+
+.fraud-card {
+    background: #FDE2E4;
+}
+
+.suspicious-card {
+    background: #FFF1D6;
+}
+
+.genuine-card {
+    background: #DDF8E8;
+}
+
+/* Responsive */
+
+@media (max-width: 1100px) {
+    .summary-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.chart-card.full-width {
+    grid-column: span 2;
+    height: 320px;
+    padding: 22px;
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-card.full-width canvas {
+    height: 240px !important;
+    max-height: 240px !important;
+}
+
+/* ================= TEXT FRAUD INSIGHTS PANEL ================= */
+
+.insights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+    margin-top: 24px;
+}
+
+.insight-box {
+    background: #f8fafc;
+    border: 1px solid #E5E7EB;
+    border-radius: 18px;
+    padding: 24px;
+    transition: 0.3s ease;
+}
+
+.insight-box:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.05);
+}
+
+.insight-box h5 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 10px;
+}
+
+.insight-box p {
+    font-size: 18px;
+    font-weight: 600;
+    color: #2563eb;
+    margin: 0;
+}
+
+/* Dark mode support */
+
+body.dark .insight-box {
+    background: #141418;
+    border-color: #26262E;
+}
+
+body.dark .insight-box h5 {
+    color: #F5F5F7;
+}
+
+body.dark .insight-box p {
+    color: #60a5fa;
+}
+
+/* ================= PREMIUM TREND GRAPH ================= */
+
+.chart-card.full-width {
+    grid-column: span 2;
+    min-height: auto;   /* fixed */
+    height: auto;       /* important */
+    padding: 24px;
+    border-radius: 20px;
+    position: relative;
+    overflow: hidden;   /* overlap stop */
+    margin-bottom: 24px;
+}
+
+.chart-card.full-width canvas {
+    height: 320px !important;
+    margin-top: 20px;
+}
+
+.trend-filter {
+    position: absolute;
+    top: 24px;
+    right: 28px;
+}
+
+.trend-filter select {
+    padding: 10px 18px;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    background: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+}
+
+body.dark .trend-filter select {
+    background: #141418;
+    border-color: #26262E;
+    color: white;
+}
+
+/* ================= PREMIUM ACTIVITY TIMELINE ================= */
+
+.activity-timeline {
+    display: grid;
+    gap: 18px;
+    margin-top: 24px;
+}
+
+.activity-card {
+    background: #ffffff;
+    border: 1px solid #E5E7EB;
+    border-radius: 18px;
+    padding: 22px;
+    transition: 0.3s ease;
+}
+
+.activity-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.06);
+}
+
+.activity-card h5 {
+    font-size: 17px;
+    margin: 10px 0 8px;
+}
+
+.activity-card p {
+    font-size: 15px;
+    color: #374151;
+    margin: 0;
+}
+
+.activity-card span {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.activity-card.fraud .status-badge {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.activity-card.genuine .status-badge {
+    background: #DCFCE7;
+    color: #16A34A;
+}
+
+.activity-card.suspicious .status-badge {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+/* ================= PERFORMANCE PANEL ================= */
+
+.performance-card {
+    margin-top: 24px;
+}
+
+.performance-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #F3F4F6;
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #3B82F6;
+    border-radius: 999px;
+}
+
+/* ================= INTELLIGENT DETECTION ENGINE ================= */
+
+/* ================= COMPACT INTELLIGENT DETECTION ENGINE ================= */
+
+.intelligent-engine {
+    padding: 24px;
+    border-radius: 20px;
+    margin-top: 30px;   /* graph पासून proper gap */
+}
+
+.engine-top-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 18px;
+}
+
+.engine-box {
+    background: #f8fafc;
+    border: 1px solid #E5E7EB;
+    border-radius: 16px;
+    padding: 20px;
+    transition: 0.3s ease;
+}
+
+.engine-box h5 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.engine-box h3 {
+    font-size: 22px;   /* smaller */
+    font-weight: 800;
+    color: #2563eb;
+    margin-bottom: 10px;
+}
+
+.engine-box p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: #6B7280;
+}
+
+.engine-arrow {
+    text-align: center;
+    margin: 24px 0;
+    font-size: 16px;
+    font-weight: 700;
+    color: #2563eb;
+}
+
+.final-hybrid-box {
+    background: linear-gradient(135deg, #eff6ff, #f8fafc);
+    border: 1px solid #DBEAFE;
+    border-radius: 18px;
+    padding: 20px;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+.final-hybrid-box h2 {
+    font-size: 22px;   /* smaller */
+    font-weight: 800;
+    margin-bottom: 10px;
+    color: #111827;
+}
+
+.final-hybrid-box h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 14px;
+}
+
+.final-accuracy {
+    display: inline-block;
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: #2563eb;
+    color: white;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 14px;
+}
+
+.final-hybrid-box p {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 0;
+}
+
+/* DARK MODE */
+
+body.dark .engine-box {
+    background: #141418;
+    border-color: #26262E;
+}
+
+body.dark .engine-box h5,
+body.dark .final-hybrid-box h2 {
+    color: #F5F5F7;
+}
+
+body.dark .engine-box p,
+body.dark .final-hybrid-box p {
+    color: #9CA3AF;
+}
+
+body.dark .final-hybrid-box {
+    background: #141418;
+    border-color: #26262E;
+}
+
+/* responsive */
+
+@media (max-width: 1100px) {
+    .engine-top-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+.analysis-section {
+    width: 100%;
+    display: block;
+    margin-top: 10px;
+}
+
+#textSection,
+#imageSection,
+#linkSection {
+    width: 100%;
+    clear: both;
+}
+
+.analysis-section {
+    width: 100%;
+    padding: 0 40px;
+    box-sizing: border-box;
+    display: block;
+    clear: both;
+}
+
+#textSection,
+#imageSection,
+#linkSection {
+    width: 100%;
+    margin-top: 10px;
+}
+
+
+
+/* ------------------------------------------------------------------------------------------------------------ */
+
+.sidebar {
+  width: 240px;
+  background: #ffffff;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  margin: 20px;
+  border-radius: 28px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+
+  /* FIXED SIDEBAR */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: calc(100vh - 40px);
+  overflow: hidden;
+}
+
+.main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  margin: 20px 20px 20px 280px;
+}
+</style>
+</head>
+
+<body>
+
+
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="logo">RecruitSafe</div>
+
+<!-- <nav class="nav">
+
+<a href="/dashboard" class="active">Dashboard</a>
+<a href="/manage-users">Manage Users</a>
+<a href="/analyze">Analyze Jobs</a>
+<a href="/history">History</a>
+<a href="/alerts">Alerts</a>
+<a href="/settings">Settings</a>
+
+</nav> -->
+
+<nav class="nav">
+
+<a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">
+  <i data-lucide="home"></i>
+  Dashboard
+</a>
+
+<a href="/manage-users" class="{% if request.path == '/manage-users' %}active{% endif %}">
+  <i data-lucide="users"></i>
+  Manage Users
+</a>
+
+<a href="/analyze" class="{% if request.path == '/analyze' %}active{% endif %}">
+  <i data-lucide="search"></i>
+  Analyze Jobs
+</a>
+
+<a href="/history" class="{% if request.path == '/history' %}active{% endif %}">
+  <i data-lucide="clock"></i>
+  History
+</a>
+
+<a href="/settings" class="{% if request.path == '/settings' %}active{% endif %}">
+  <i data-lucide="settings"></i>
+  Settings
+</a>
+
+</nav>
+
+
+  <div class="sidebar-footer">
+    <!-- THEME TOGGLE -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+      <div class="toggle-circle">
+        <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+
+        <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round" style="display:none">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </div>
+
+      <span class="toggle-text" id="toggleText">Day mode</span>
+    </div>
+
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+  <!-- LEFT -->
+
+  <!-- <div class="top-welcome">
+  Welcome back {{ request.user.username }} 👋
+  <span>Overview of recruitment fraud analytics.</span>
+</div> -->
+
+<div class="top-welcome">
+  <div id="welcomeUsername"></div>
+  <span>Overview of recruitment fraud analytics.</span>
+</div>
+
+  <!-- RIGHT -->
+  <div class="top-right">
+    <div class="search">
+      <input type="text" placeholder="🔍︎  Search">
+    </div>
+
+    
+    <!-- PROFILE -->
+    <div class="profile-wrapper">
+  <div class="profile-avatar" onclick="toggleProfileMenu()">
+    <img id="profileImage" alt="Profile">
+  </div>
+
+  <div class="profile-menu" id="profileMenu">
+    <div class="profile-info">
+      Logged in as <strong id="profileUsername"></strong>
+    </div>
+
+    <a href="#">Profile</a>
+   <div class="dropdown-item logout-item" onclick="logout()">
+  <span class="item-text">Logout</span>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+       viewBox="0 0 24 24" fill="none" stroke="currentColor"
+       stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+    <polyline points="16 17 21 12 16 7"/>
+    <line x1="21" y1="12" x2="9" y2="12"/>
+  </svg>
+</div>
+
+</div>
+
+</a>
+
+  </div>
+</div>
+
+</header>
+
+
+  <!-- CONTENT
+  <main class="content">
+    <div class="dashboard-placeholder">
+      📊 Charts & analytics will appear here
+    </div>
+  </main> -->
+  <!-- Dashboard Summary Cards -->
+
+  <!-- ANALYSIS TABS -->
+
+
+
+
+
+<!-- <h3 style="margin: 10px 40px; font-weight:600; color:#6B7280;">
+  Viewing: {{ context_user.username }}
+</h3> -->
+
+<h3 style="margin: 10px 40px; font-weight:600; color:#6B7280;">
+  Viewing: <span id="viewingUsername"></span>
+</h3>
+
+<!-- ================= SUMMARY CARDS ================= -->
+
+<div class="summary-cards">
+
+    <div class="summary-card total-card">
+        <h5>Total Analyses</h5>
+        <h2>
+            {{ text_data.0|add:text_data.1|add:text_data.2|add:image_data.0|add:image_data.1|add:image_data.2|add:link_data.0|add:link_data.1|add:link_data.2 }}
+        </h2>
+        <p>All job checks performed</p>
+    </div>
+
+    <div class="summary-card fraud-card">
+        <h5>Fraud Detected</h5>
+        <h2>
+            {{ text_data.2|add:image_data.2|add:link_data.2 }}
+        </h2>
+        <p>High risk job postings</p>
+    </div>
+
+    <div class="summary-card suspicious-card">
+        <h5>Suspicious Jobs</h5>
+        <h2>
+            {{ text_data.1|add:image_data.1|add:link_data.1 }}
+        </h2>
+        <p>Needs manual review</p>
+    </div>
+
+    <div class="summary-card genuine-card">
+        <h5>Genuine Jobs</h5>
+        <h2>
+            {{ text_data.0|add:image_data.0|add:link_data.0 }}
+        </h2>
+        <p>Safe verified jobs</p>
+    </div>
+
+</div>
+
+<div class="analysis-tabs">
+
+<button class="tab-btn active" onclick="switchTab('text', event)">
+Text Analysis
+</button>
+
+<button class="tab-btn" onclick="switchTab('image', event)">
+Image Analysis
+</button>
+
+<button class="tab-btn" onclick="switchTab('link', event)">
+Link Analysis
+</button>
+</div>
+
+<div id="textSection" class="analysis-section">
+
+<div class="dashboard-charts">
+
+<div class="chart-card">
+<h4>Text Job Classification</h4>
+<canvas id="textPieChart"></canvas>
+</div>
+
+<div class="chart-card">
+<h4>Text Risk Distribution</h4>
+<canvas id="textBarChart"></canvas>
+</div>
+
+
+<div class="chart-card full-width">
+    <h4>Text Analysis Trend</h4>
+
+    <div class="trend-filter">
+        <select>
+            <option>Last 7 Days</option>
+            <option>Last 15 Days</option>
+            <option>Last 30 Days</option>
+        </select>
+    </div>
+
+    <canvas id="textLineChart"></canvas>
+</div>
+
+    
+</div>
+<div class="chart-card full-width intelligent-engine">
+
+    <h4>Intelligent Detection Engine</h4>
+
+    <div class="engine-top-cards">
+
+        <div class="engine-box">
+            <h5>DistilBERT NLP Model</h5>
+            <h3>94%</h3>
+            <p>Understands semantic fraud patterns from job descriptions using deep contextual learning.</p>
+        </div>
+
+        <div class="engine-box">
+            <h5>Rule-Based Detection</h5>
+            <h3>89%</h3>
+            <p>Detects scam signals like registration fee, WhatsApp hiring, Telegram jobs and fake offers.</p>
+        </div>
+
+        <div class="engine-box">
+            <h5>Explainable AI Layer</h5>
+            <h3>SHAP + LIME</h3>
+            <p>Provides transparent fraud reasoning and explains why the system marked a job as suspicious.</p>
+        </div>
+
+    </div>
+
+    <div class="engine-arrow">
+        ↓ Combined Into Final Detection Model ↓
+    </div>
+
+    <div class="final-hybrid-box">
+        <h2>Final Hybrid Model</h2>
+        <h3>DistilBERT + Rule Engine + SHAP + LIME</h3>
+        <div class="final-accuracy">97% Accuracy</div>
+        <p>Our intelligent engine combines the power of deep learning with expert rules and explainability to achieve fraud detection performance.</p>
+    </div>
+
+</div>
+        
+</div>
+
+<div id="imageSection" class="analysis-section" style="display:none">
+
+    <div class="dashboard-charts">
+
+        <div class="chart-card">
+            <h4>Image Job Classification</h4>
+            <canvas id="imagePieChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h4>Image Risk Distribution</h4>
+            <canvas id="imageBarChart"></canvas>
+        </div>
+
+        <div class="chart-card full-width">
+            <h4>Image Analysis Trend</h4>
+
+            <div class="trend-filter">
+                <select>
+                    <option>Last 7 Days</option>
+                    <option>Last 15 Days</option>
+                    <option>Last 30 Days</option>
+                </select>
+            </div>
+
+            <canvas id="imageLineChart"></canvas>
+        </div>
+
+    </div>
+
+    <div class="chart-card full-width intelligent-engine">
+
+        <h4>Intelligent Detection Engine</h4>
+
+        <div class="engine-top-cards">
+
+            <div class="engine-box">
+                <h5>DistilBERT NLP Model</h5>
+                <h3>94%</h3>
+                <p>Understands semantic fraud patterns from job descriptions using deep contextual learning.</p>
+            </div>
+
+            <div class="engine-box">
+                <h5>Rule-Based Detection</h5>
+                <h3>89%</h3>
+                <p>Detects scam signals like registration fee, WhatsApp hiring, Telegram jobs and fake offers.</p>
+            </div>
+
+            <div class="engine-box">
+                <h5>Explainable AI Layer</h5>
+                <h3>SHAP + LIME</h3>
+                <p>Provides transparent fraud reasoning and explains why the system marked a job as suspicious.</p>
+            </div>
+
+        </div>
+
+        <div class="engine-arrow">
+            ↓ Combined Into Final Detection Model ↓
+        </div>
+
+        <div class="final-hybrid-box">
+            <h2>Final Hybrid Model</h2>
+            <h3>DistilBERT + Rule Engine + SHAP + LIME</h3>
+            <div class="final-accuracy">97% Accuracy</div>
+            <p>Our intelligent engine combines the power of deep learning with expert rules and explainability to achieve fraud detection performance.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="linkSection" class="analysis-section" style="display:none">
+
+    <div class="dashboard-charts">
+
+        <div class="chart-card">
+            <h4>Link Fraud Detection</h4>
+            <canvas id="linkPieChart"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <h4>Link Risk Levels</h4>
+            <canvas id="linkBarChart"></canvas>
+        </div>
+
+        <!-- LINK LINE CHART -->
+        <div class="chart-card full-width">
+            <h4>Link Analysis Trend</h4>
+
+            <div class="trend-filter">
+                <select>
+                    <option>Last 7 Days</option>
+                    <option>Last 15 Days</option>
+                    <option>Last 30 Days</option>
+                </select>
+            </div>
+
+            <canvas id="linkLineChart"></canvas>
+        </div>
+
+    </div>
+
+    <!-- INTELLIGENT DETECTION ENGINE -->
+    <div class="chart-card full-width intelligent-engine">
+
+        <h4>Intelligent Detection Engine</h4>
+
+        <div class="engine-top-cards">
+
+            <div class="engine-box">
+                <h5>DistilBERT NLP Model</h5>
+                <h3>94%</h3>
+                <p>Understands semantic fraud patterns from job descriptions using deep contextual learning.</p>
+            </div>
+
+            <div class="engine-box">
+                <h5>Rule-Based Detection</h5>
+                <h3>89%</h3>
+                <p>Detects suspicious URLs, fake domains, redirect scams and phishing job links.</p>
+            </div>
+
+            <div class="engine-box">
+                <h5>Explainable AI Layer</h5>
+                <h3>SHAP + LIME</h3>
+                <p>Provides transparent fraud reasoning and explains why the system marked a link as suspicious.</p>
+            </div>
+
+        </div>
+
+        <div class="engine-arrow">
+            ↓ Combined Into Final Detection Model ↓
+        </div>
+
+        <div class="final-hybrid-box">
+            <h2>Final Hybrid Model</h2>
+            <h3>DistilBERT + Rule Engine + SHAP + LIME</h3>
+            <div class="final-accuracy">97% Accuracy</div>
+            <p>Our intelligent engine combines deep learning with expert rules and explainability for powerful fraud detection.</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+/* ================= USER INFO ================= */
+const username = localStorage.getItem("username") || "User";
+const profileImg = document.getElementById("profileImage");
+
+const welcomeUsername = document.getElementById("welcomeUsername");
+const viewingUsername = document.getElementById("viewingUsername");
+
+if (welcomeUsername) {
+  welcomeUsername.innerText = `Welcome back ${username} 👋`;
+}
+
+if (viewingUsername) {
+  viewingUsername.innerText = username;
+}
+
+/* ================= PROFILE IMAGE ================= */
+const savedProfileImage = localStorage.getItem("profileImage");
+
+if (savedProfileImage) {
+  profileImg.src = savedProfileImage;
+} else {
+  profileImg.src =
+    "data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239CA3AF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>\
+      <circle cx='12' cy='8' r='4'/>\
+      <path d='M4 20c0-4 4-6 8-6s8 2 8 6'/>\
+    </svg>";
+}
+
+/* ================= THEME TOGGLE ================= */
+const sunIcon = document.getElementById("sunIcon");
+const moonIcon = document.getElementById("moonIcon");
+const toggleText = document.getElementById("toggleText");
+
+/* Apply theme */
+function applyTheme(theme) {
+  if (theme === "dark") {
+    document.body.classList.add("dark");
+    sunIcon.style.display = "none";
+    moonIcon.style.display = "block";
+    toggleText.textContent = "Night mode";
+  } else {
+    document.body.classList.remove("dark");
+    sunIcon.style.display = "block";
+    moonIcon.style.display = "none";
+    toggleText.textContent = "Day mode";
+  }
+  localStorage.setItem("theme", theme);
+}
+
+/* Toggle on click */
+function toggleTheme() {
+  const currentTheme = localStorage.getItem("theme") || "light";
+  const nextTheme = currentTheme === "light" ? "dark" : "light";
+  applyTheme(nextTheme);
+}
+
+/* Load saved theme on page load */
+applyTheme(localStorage.getItem("theme") || "light");
+
+/* ================= LOGOUT ================= */
+function logout() {
+  localStorage.clear();
+  window.location.href = "/logout";
+}
+
+
+/* ===== PROFILE DROPDOWN LOGIC ===== */
+const profileMenu = document.getElementById("profileMenu");
+const profileUsername = document.getElementById("profileUsername");
+
+profileUsername.textContent = username;
+
+function toggleProfileMenu() {
+  profileMenu.style.display =
+    profileMenu.style.display === "block" ? "none" : "block";
+}
+
+/* Close dropdown when clicking outside */
+document.addEventListener("DOMContentLoaded", function(){
+
+  // Hide all sections first
+  document.getElementById("textSection").style.display = "none";
+  document.getElementById("imageSection").style.display = "none";
+  document.getElementById("linkSection").style.display = "none";
+
+  // Show default section
+  document.getElementById("textSection").style.display = "block";
+
+  // Remove active from all buttons
+  const buttons = document.querySelectorAll(".tab-btn");
+  buttons.forEach(btn => btn.classList.remove("active"));
+
+  // Add active to first button (Text)
+  buttons[0].classList.add("active");
+
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+/* Pie Chart */
+// ================= TEXT ANALYSIS CHARTS =================
+
+// TEXT PIE
+const textPieChart = new Chart(document.getElementById("textPieChart"), {
+type: "pie",
+data: {
+labels: ["Genuine", "Suspicious", "Fraud"],
+datasets: [{
+data: {{ text_data|safe }},
+backgroundColor: ["#22c55e", "#facc15", "#ef4444"]
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false
+}
+});
+
+// TEXT BAR
+const textBarChart = new Chart(document.getElementById("textBarChart"),{
+type:"bar",
+data:{
+labels:["Genuine","Suspicious","Fraud"],
+datasets:[{
+data: {{ text_bar|safe }},
+backgroundColor:["#22c55e","#facc15","#ef4444"]
+}]
+},
+options:{
+responsive:true,
+maintainAspectRatio:false,
+scales:{
+y:{beginAtZero:true}
+}
+}
+});
+
+// TEXT LINE
+const ctx = document.getElementById("textLineChart").getContext("2d");
+
+const gradient = ctx.createLinearGradient(0, 0, 0, 350);
+gradient.addColorStop(0, "rgba(59,130,246,0.25)");
+gradient.addColorStop(1, "rgba(59,130,246,0.02)");
+
+const textLineChart = new Chart(ctx, {
+    type: "line",
+    data: {
+        labels: {{ text_trend_labels|safe }},
+        datasets: [{
+            label: "Fraud Analysis",
+            data: {{ text_trend_data|safe }},
+            borderColor: "#3b82f6",
+            backgroundColor: gradient,
+            fill: true,
+            tension: 0.45,
+            borderWidth: 3,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: "#ffffff",
+            pointBorderColor: "#3b82f6",
+            pointBorderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+    backgroundColor: "#ffffff",
+    titleColor: "#111827",
+    bodyColor: "#111827",
+    borderColor: "#E5E7EB",
+    borderWidth: 1,
+    padding: 14,
+    displayColors: false,
+
+    callbacks: {
+        title: function(context) {
+            return context[0].label;  
+            // example: 24 Apr 2026
+        },
+
+        label: function(context) {
+            return "Fraud Analysis: " + context.raw;
+            // example: Fraud Analysis: 6
+        }
+    }
+}
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: "#F3F4F6"
+                }
+            }
+        }
+    }
+});
+// ================= IMAGE ANALYSIS CHARTS =================
+
+const imagePieChart = new Chart(document.getElementById("imagePieChart"), {
+type: "pie",
+data: {
+labels: ["Genuine", "Suspicious", "Fraud"],
+datasets: [{
+data: {{ image_data|safe }},
+backgroundColor: ["#22c55e", "#facc15", "#ef4444"]
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false
+}
+});
+
+const imageBarChart = new Chart(document.getElementById("imageBarChart"),{
+type:"bar",
+data:{
+labels:["Genuine","Suspicious","Fraud"],
+datasets:[{
+data: {{ image_bar|safe }},
+backgroundColor:["#22c55e","#facc15","#ef4444"]
+}]
+}
+});
+
+const imageCtx = document.getElementById("imageLineChart").getContext("2d");
+
+const imageGradient = imageCtx.createLinearGradient(0, 0, 0, 350);
+imageGradient.addColorStop(0, "rgba(59,130,246,0.25)");
+imageGradient.addColorStop(1, "rgba(59,130,246,0.02)");
+
+const imageLineChart = new Chart(imageCtx, {
+    type: "line",
+    data: {
+        labels: {{ image_trend_labels|safe }},
+        datasets: [{
+            label: "Image Analysis",
+            data: {{ image_trend_data|safe }},
+            borderColor: "#3b82f6",
+            backgroundColor: imageGradient,
+            fill: true,
+            tension: 0.45,
+            borderWidth: 3,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: "#ffffff",
+            pointBorderColor: "#3b82f6",
+            pointBorderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: "#F3F4F6"
+                }
+            }
+        }
+    }
+});
+
+// ================= LINK ANALYSIS CHARTS =================
+
+const linkPieChart = new Chart(document.getElementById("linkPieChart"), {
+type: "pie",
+data: {
+labels: ["Genuine", "Suspicious", "Fraud"],
+datasets: [{
+data: {{ link_data|safe }},
+backgroundColor: ["#22c55e", "#facc15", "#ef4444"]
+}]
+},
+options: {
+responsive: true,
+maintainAspectRatio: false
+}
+});
+
+const linkBarChart = new Chart(document.getElementById("linkBarChart"),{
+type:"bar",
+data:{
+labels:["Genuine","Suspicious","Fraud"],
+datasets:[{
+data: {{ link_bar|safe }},
+backgroundColor:["#22c55e","#facc15","#ef4444"]
+}]
+}
+});
+
+const linkCtx = document.getElementById("linkLineChart").getContext("2d");
+
+const linkGradient = linkCtx.createLinearGradient(0, 0, 0, 350);
+linkGradient.addColorStop(0, "rgba(59,130,246,0.25)");
+linkGradient.addColorStop(1, "rgba(59,130,246,0.02)");
+
+const linkLineChart = new Chart(linkCtx, {
+    type: "line",
+    data: {
+        labels: {{ link_trend_labels|safe }},
+        datasets: [{
+            label: "Link Analysis",
+            data: {{ link_trend_data|safe }},
+            borderColor: "#3b82f6",
+            backgroundColor: linkGradient,
+            fill: true,
+            tension: 0.45,
+            borderWidth: 3,
+            pointRadius: 5,
+            pointHoverRadius: 7,
+            pointBackgroundColor: "#ffffff",
+            pointBorderColor: "#3b82f6",
+            pointBorderWidth: 2
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            x: {
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: "#F3F4F6"
+                }
+            }
+        }
+    }
+});
+</script>
+
+
+
+
+<script>
+const textColor = getComputedStyle(document.body)
+    .getPropertyValue('--text-secondary');
+
+const gridColor = getComputedStyle(document.body)
+    .getPropertyValue('--border-color');
+</script>
+
+<script>  
+
+/* ================= TAB SWITCH ================= */
+
+window.switchTab = function(type, event = null){
+
+document.getElementById("textSection").style.display="none";
+document.getElementById("imageSection").style.display="none";
+document.getElementById("linkSection").style.display="none";
+
+if(type==="text"){
+document.getElementById("textSection").style.display="block";
+}
+
+if(type==="image"){
+document.getElementById("imageSection").style.display="block";
+}
+
+if(type==="link"){
+document.getElementById("linkSection").style.display="block";
+}
+
+const buttons=document.querySelectorAll(".tab-btn");
+buttons.forEach(btn=>btn.classList.remove("active"));
+
+if(event){
+  event.target.classList.add("active");
+} else {
+  // default case → highlight first button
+  document.querySelectorAll(".tab-btn")[0].classList.add("active");
+}
+
+}
+
+function updateCharts(pieData,barData,lineData){
+
+jobPieChart.data.datasets[0].data = pieData;
+jobPieChart.update();
+
+riskBarChart.data.datasets[0].data = barData;
+riskBarChart.update();
+
+trendLineChart.data.datasets[0].data = lineData;
+trendLineChart.update();
+
+}
+// Default tab load
+document.addEventListener("DOMContentLoaded", function(){
+
+switchTab("text");
+
+});
+
+lucide.createIcons();
+
+</script>
+
+
+</body>
+</html>

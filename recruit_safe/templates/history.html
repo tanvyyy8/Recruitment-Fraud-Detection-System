@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>History | RecruitSafe</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #F7F8FA;
+            color: #000;
+            display: flex;
+        }
+
+        /* ================= SIDEBAR ================= */
+        .sidebar {
+            width: 240px;
+            background: #ffffff;
+            padding: 30px 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 20px;
+            border-radius: 28px;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .sidebar .logo {
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            padding-left: 35px;
+            padding-top: 8px;
+        }
+
+        .nav a {
+            display: block;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #111;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .nav a.active,
+        .nav a:hover {
+            background: #F3F4F6;
+        }
+
+        .sidebar-footer {
+            margin-top: auto;
+        }
+
+        /* ================= THEME TOGGLE ================= */
+        .theme-toggle {
+            width: 170px;
+            height: 44px;
+            padding: 6px;
+            border-radius: 999px;
+            background: #E5E7EB;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.3s ease;
+            margin-left: 10px;
+            margin-bottom: 10px;
+        }
+
+
+        .toggle-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease;
+        }
+
+        .toggle-circle svg {
+            width: 16px;
+            height: 16px;
+            stroke: #111;
+            fill: none;
+        }
+
+        .toggle-text {
+            font-size: 14px;
+            font-weight: 600;
+            pointer-events: none;
+            color: #111;
+            padding: 0 42px;
+            /* ✅ THIS creates space from the circle */
+        }
+
+
+
+        /* ICON VISIBILITY */
+        #moonIcon {
+            display: none;
+        }
+
+        /* ================= DARK MODE ================= */
+        body.dark {
+            background-color: #020203;
+            color: #F5F5F7;
+        }
+
+        body.dark .sidebar {
+            background: #1C1C22;
+            border: 1px solid #26262E;
+            box-shadow: none;
+        }
+
+        body.dark .nav a {
+            color: #9CA3AF;
+        }
+
+        body.dark .nav a.active,
+        body.dark .nav a:hover {
+            background: #26262E;
+            color: #F5F5F7;
+        }
+
+        body.dark .theme-toggle {
+            background: #111827;
+            width: 160px;
+            /* keeps enough space for “Night mode” */
+        }
+
+        body.dark .toggle-circle {
+            transform: translateX(116px);
+            /* slightly less than before */
+        }
+
+
+        body.dark .toggle-text {
+            color: #ffffff;
+
+        }
+
+
+        body.dark .toggle-circle svg {
+            stroke: #111;
+        }
+
+
+
+        body.dark #sunIcon {
+            display: none;
+        }
+
+        body.dark #moonIcon {
+            display: block;
+        }
+
+        /* ================= MAIN ================= */
+        .main {
+            flex: 1;
+            margin: 20px 20px 20px 0;
+            padding: 40px;
+        }
+
+        .placeholder {
+            background: #ffffff;
+            border-radius: 24px;
+            padding: 80px;
+            text-align: center;
+            color: #6B7280;
+            font-size: 16px;
+            border: 1px dashed #D1D5DB;
+        }
+
+        body.dark .placeholder {
+            background: #1C1C22;
+            border-color: #26262E;
+            color: #9CA3AF;
+        }
+
+        /* keep text in one line ALWAYS */
+        .toggle-text {
+            white-space: nowrap;
+        }
+
+        /* ensure enough width so "Night mode" never wraps */
+        .theme-toggle {
+            min-width: 170px;
+            /* adjust if you want slightly smaller/larger */
+        }
+
+        .theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+
+            width: 170px;
+            /* fixed width = no wrapping */
+            height: 44px;
+
+            padding: 6px 10px;
+            border-radius: 999px;
+
+            background: #E5E7EB;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .toggle-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+            /* 🔥 CRITICAL */
+            transition: transform 0.3s ease;
+        }
+
+        body.dark .theme-toggle {
+            background: #767676;
+        }
+
+        body.dark .theme-toggle {
+            flex-direction: row-reverse;
+            /* circle moves right */
+        }
+
+        .toggle-circle {
+            margin-left: 6px;
+        }
+
+        /* History Page Header */
+        .history-header {
+            margin-bottom: 20px;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .page-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        /* History Page Header Spacing */
+        .history-header {
+            margin-top: 60px;
+            /* ⬇️ brings heading down */
+            margin-bottom: 24px;
+            padding-left: 20px;
+            /* ⬅️ aligns with sidebar */
+        }
+
+        /* Main heading */
+        .page-title {
+            font-size: 24px;
+            font-weight: 700;
+            /* 🔥 bold heading */
+            color: var(--text-primary);
+        }
+
+        /* Subheading */
+        .page-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 6px;
+        }
+
+        /* =========================
+   HISTORY CONTAINER
+========================= */
+
+        .history-card {
+            max-width: 900px;
+            margin-top: 20px;
+
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+
+            padding: 16px;
+        }
+
+        /* =========================
+   HISTORY BADGES / BARS
+========================= */
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            background: var(--bg-main);
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+
+        .history-item:not(:last-child) {
+            margin-bottom: 12px;
+        }
+
+        /* Left info */
+        .history-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .history-info span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Right meta */
+        .history-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* =========================
+   BADGES
+========================= */
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-bottom:6px;   /* ADD THIS */
+            display:inline-block;
+        }
+
+        /* Risk */
+        .badge.low {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+
+        .badge.medium {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--warning);
+        }
+
+        .badge.high {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        /* Status */
+        .badge.success {
+            background: rgba(34, 197, 94, 0.15);
+            color: var(--success);
+        }
+
+        .badge.warning {
+            background: rgba(234, 179, 8, 0.15);
+            color: var(--warning);
+        }
+
+        .badge.danger {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--danger);
+        }
+
+        /* FORCE HISTORY TO STACK VERTICALLY */
+        .history-section {
+            display: block;
+            /* ⬅️ breaks flex row issue */
+            width: 100%;
+            margin-top: 32px;
+            flex: 1;
+            margin: 20px 20px 20px 0;
+            padding: 20px 40px 40px;
+        }
+
+        /* Header always on top */
+        .history-header {
+            width: 100%;
+            margin-bottom: 20px;
+             margin-top: 0;
+        }
+
+        /* History container below header */
+        .history-card {
+            width: 100%;
+            max-width: 900px;
+        }
+
+        /* Container below heading */
+        .history-card {
+            margin-top: 24px;
+            max-width: 900px;
+        }
+
+        /* EACH history entry as a card */
+        .history-item {
+            background: var(--bg-card);
+            /* 🔥 CARD BACKGROUND */
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+
+            padding: 16px 18px;
+            margin-bottom: 14px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Left content */
+        .history-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .history-info span {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Right badges */
+        .history-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+        }
+
+        .history-date {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .history-item:hover {
+            background: var(--bg-hover);
+            transition: background 0.2s ease;
+        }
+
+        /* ===== HISTORY CARD BACKGROUND ONLY ===== */
+
+        /* Each history row as a card */
+        
+
+        /* Dark mode support */
+        body.dark-theme .history-item {
+            background-color: #0f172a;
+            border-color: #1e293b;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+
+        .history-item {
+            width: 1300px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 110px;
+            background-color: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 16px 20px;
+            margin-bottom: 18px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Dark mode */
+        /* ================= DARK MODE – HISTORY CARDS ================= */
+
+        body.dark .history-item {
+            background-color: #111827;
+            /* dark card */
+            border-color: #1f2937;
+            color: #f9fafb;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        body.dark .history-info h4 {
+            color: #f9fafb;
+        }
+
+        body.dark .history-info span {
+            color: #9ca3af;
+        }
+
+        body.dark .history-date {
+            color: #9ca3af;
+        }
+
+        /* Status badges */
+        body.dark .badge.success {
+            background-color: rgba(34, 197, 94, 0.18);
+            color: #4ade80;
+        }
+
+        body.dark .badge.danger {
+            background-color: rgba(239, 68, 68, 0.18);
+            color: #f87171;
+        }
+
+        body.dark .badge.warning {
+            background-color: rgba(234, 179, 8, 0.18);
+            color: #facc15;
+        }
+
+        /* Hover effect */
+        body.dark .history-item:hover {
+            background-color: #0b1220;
+        }
+
+        /* ================= ACTION BUTTONS ================= */
+
+        .history-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-left: 14px;
+        }
+
+        .view-btn {
+            background: #111;
+            color: #fff;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .view-btn:hover {
+            background: #000;
+        }
+
+        .delete-btn {
+            background: #fff;
+            border: 1px solid #D1D5DB;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .delete-btn:hover {
+            background: #F3F4F6;
+        }
+
+
+        /* ================= MODAL ================= */
+
+        .modal {
+
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(0, 0, 0, 0.45);
+            backdrop-filter: blur(6px);
+
+            z-index: 9999;
+
+        }
+
+        .modal-content {
+
+            background: #ffffff;
+
+            width: 720px;
+            max-width: 90%;
+
+            max-height: 80vh;
+
+            display: flex;
+            flex-direction: column;
+
+            padding: 28px;
+
+            border-radius: 18px;
+
+            box-shadow: 0 30px 70px rgba(0, 0, 0, 0.25);
+
+            border: 1px solid #E5E7EB;
+
+        }
+
+        .modal-body {
+
+            overflow-y: auto;
+
+            max-height: 55vh;
+
+            padding-right: 6px;
+
+            margin-top: 10px;
+
+            flex: 1;
+
+        }
+
+        .modal-buttons {
+
+            margin-top: 18px;
+
+            display: flex;
+
+            gap: 12px;
+
+            justify-content: flex-end;
+
+            flex-shrink: 0;
+
+        }
+
+
+        .cancel-btn {
+
+            background: #fff;
+
+            border: 1px solid #D1D5DB;
+
+            padding: 8px 16px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+        }
+
+        .cancel-btn:hover {
+            background: #F3F4F6;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+        
+        .nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ICON STYLE */
+.nav a i {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2;
+  color: inherit; /* matches text color */
+}
+
+.history-section {
+    flex: 1;
+    margin: 20px 20px 20px 0;   /* dashboard सारखा spacing */
+    padding: 40px;
+}
+
+.sidebar {
+    height: calc(100vh - 40px);
+}
+
+.pagination{
+    width:100%;
+    max-width:900px;
+    margin:30px auto 0 auto;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:10px;
+}
+
+/* Base button */
+.page-btn{
+    min-width:38px;
+    height:38px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:10px;
+    border:1px solid #E5E7EB;
+
+    background:#ffffff;
+    color:#111;
+
+    font-size:14px;
+    font-weight:600;
+
+    text-decoration:none;
+    cursor:pointer;
+
+    transition:all 0.2s ease;
+}
+
+/* Hover */
+.page-btn:hover{
+    background:#F3F4F6;
+    transform:translateY(-1px);
+}
+
+/* Active */
+.page-btn.active{
+    background:#111827;
+    color:#ffffff;
+    border:none;
+    box-shadow:0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Arrow buttons */
+.nav-btn{
+    font-size:16px;
+    font-weight:700;
+}
+
+/* Disabled */
+.page-btn.disabled{
+    opacity:0.4;
+    pointer-events:none;
+}
+
+body.dark .page-btn{
+    background:#141418;
+    border-color:#26262E;
+    color:#9CA3AF;
+}
+
+body.dark .page-btn:hover{
+    background:#1C1C22;
+}
+
+body.dark .page-btn.active{
+    background:#ffffff;
+    color:#000;
+}
+
+body.dark .page-btn.disabled{
+    opacity:0.3;
+}
+/* HEADER */
+.history-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+
+  width:1300px;
+  margin-left:10px;
+  margin-right:auto;
+
+  padding:0 20px;   /* 👈 THIS FIXES ALIGNMENT */
+}
+/* subtitle */
+.sub-text{
+  font-size:13px;
+  color:#6B7280;
+}
+
+/* FILTER BOX */
+/* CONTAINER */
+.filters{
+  display:flex;
+  gap:12px;
+  padding:10px 14px;
+  border-radius:999px;
+  background:rgba(255,255,255,0.7);
+  backdrop-filter: blur(12px);
+  border:1px solid #E5E7EB;
+  box-shadow:0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* DROPDOWN */
+.custom-dropdown{
+  position:relative;
+  min-width:120px;
+  cursor:pointer;
+}
+
+/* SELECTED */
+.dropdown-selected{
+  padding:8px 32px 8px 14px;  /* 👈 right space for arrow */
+  border-radius:999px;
+  background:#F3F4F6;
+  font-size:13px;
+  font-weight:600;
+  position:relative;
+}
+
+/* 🔻 ARROW */
+.dropdown-selected::after{
+  content:"";
+  position:absolute;
+  right:14px;
+  top:50%;
+
+  width:6px;
+  height:6px;
+
+  border-right:1.8px solid #9CA3AF;
+  border-bottom:1.8px solid #9CA3AF;
+
+  transform:translateY(-60%) rotate(45deg);
+  transition:all 0.25s ease;
+}
+
+.dropdown-selected:hover{
+  background:#E5E7EB;
+}
+
+/* OPTIONS BOX */
+.dropdown-options{
+  position:absolute;
+  top:110%;
+  left:0;
+
+  width:100%;
+  background:#ffffff;
+  border-radius:12px;
+  border:1px solid #E5E7EB;
+
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+
+  opacity:0;
+  transform:translateY(-10px);
+  pointer-events:none;
+  transition:0.25s;
+  z-index:1000;
+}
+
+/* SHOW */
+.custom-dropdown.active .dropdown-selected::after{
+  transform:translateY(-40%) rotate(-135deg);
+}
+/* OPTION ITEM */
+.dropdown-options div{
+  padding:10px 14px;
+  font-size:13px;
+  transition:0.2s;
+}
+
+.dropdown-options div:hover{
+  background:#F3F4F6;
+}
+
+/* DATE INPUT */
+.filters input {
+  appearance: none;
+  -webkit-appearance: none;
+
+  padding: 10px 14px;
+  border-radius: 999px;
+
+  background: #F3F4F6;
+  border: 1px solid transparent;
+
+  font-size: 13px;
+  font-weight: 600;
+  color: #111;
+
+  transition: all 0.25s ease;
+
+  cursor: pointer;
+}
+
+/* Hover */
+.filters input:hover {
+  background: #E5E7EB;
+}
+
+/* Focus glow */
+.filters input:focus {
+  outline: none;
+  border: 1px solid #6366F1;
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+}
+
+body.dark .dropdown-selected::after{
+  border-color:#6B7280;
+}
+.filters{
+  position:relative;
+  z-index:10;
+}
+
+.dropdown-options{
+  z-index:9999;   /* 🔥 VERY IMPORTANT */
+}
+/* 🔥 SHOW DROPDOWN */
+.custom-dropdown.active .dropdown-options{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.filters input::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.2s;
+}
+
+.filters input::-webkit-calendar-picker-indicator:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.filters input::before {
+  content: "Select month";
+  color: #9CA3AF;
+}
+
+.filters input:focus::before {
+  content: "";
+}
+</style>
+</head>
+
+<body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="logo">RecruitSafe</div>
+
+        <nav class="nav">
+
+<a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">
+  <i data-lucide="home"></i>
+  Dashboard
+</a>
+
+<a href="/manage-users" class="{% if request.path == '/manage-users' %}active{% endif %}">
+  <i data-lucide="users"></i>
+  Manage Users
+</a>
+
+<a href="/analyze" class="{% if request.path == '/analyze' %}active{% endif %}">
+  <i data-lucide="search"></i>
+  Analyze Jobs
+</a>
+
+<a href="/history" class="{% if request.path == '/history' %}active{% endif %}">
+  <i data-lucide="clock"></i>
+  History
+</a>
+
+
+<a href="/settings" class="{% if request.path == '/settings' %}active{% endif %}">
+  <i data-lucide="settings"></i>
+  Settings
+</a>
+
+</nav>
+
+
+
+        <div class="sidebar-footer">
+            <div class="theme-toggle" onclick="toggleTheme()">
+                <div class="toggle-circle">
+                    <!-- SUN -->
+                    <svg id="sunIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="5" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                    </svg>
+
+                    <!-- MOON -->
+                    <svg id="moonIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                    </svg>
+                </div>
+
+                <span class="toggle-text" id="toggleText">Day mode</span>
+            </div>
+        </div>
+    </aside>
+    <!-- /*-----------------------------------------------------------------------------------------------------------------------------------*/ -->
+
+    <!-- MAIN CONTENT -->
+     
+   <div class="history-section">
+
+  <div class="history-header">
+
+    <!-- LEFT -->
+    <div>
+      <h2 class="page-title">Analysis History</h2>
+      <p class="sub-text">Previously analyzed job postings</p>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="filters">
+
+  <!-- TYPE DROPDOWN -->
+  <div class="custom-dropdown">
+    <div class="dropdown-selected">Type</div>
+    <div class="dropdown-options">
+      <div data-value="">All</div>
+      <div data-value="text">Text</div>
+      <div data-value="image">Image</div>
+      <div data-value="link">Link</div>
+    </div>
+  </div>
+
+  <!-- STATUS DROPDOWN -->
+  <div class="custom-dropdown">
+    <div class="dropdown-selected">Result</div>
+    <div class="dropdown-options">
+      <div data-value="">All</div>
+      <div data-value="Fraud">Fraud</div>
+      <div data-value="Genuine">Genuine</div>
+      <div data-value="Suspicious">Suspicious</div>
+    </div>
+  </div>
+
+  
+</div>
+
+  </div> <!-- ✅ ONLY ONE CLOSE -->
+
+  <!-- ⬇️ KEEP YOUR HISTORY CARD BELOW THIS -->
+
+
+        <!-- History Badges -->
+        <div class="history-card">
+
+            {% for item in analyses %}
+
+            <div class="history-item">
+
+                <div class="history-info">
+
+                    {% if item.analysis_type == "text" %}
+                    <span class="badge medium">TEXT</span>
+                    {% elif item.analysis_type == "image" %}
+                    <span class="badge warning">IMAGE</span>
+                    {% elif item.analysis_type == "link" %}
+                    <span class="badge danger">LINK</span>
+                    {% endif %}
+
+                    <h4>{{ item.job_title }}</h4>
+                    <span>{{ item.company }}</span>
+
+                </div>
+
+                <div class="history-meta">
+
+                    {% if item.decision == "Genuine" %}
+                    <span class="badge success">Genuine</span>
+                    {% elif item.decision == "Suspicious" %}
+                    <span class="badge warning">Suspicious</span>
+                    {% else %}
+                    <span class="badge danger">Fraud</span>
+                    {% endif %}
+
+                    <span class="history-date">{{ item.created_at|date:"d M" }}</span>
+
+                    <div class="history-actions">
+
+                        <button class="view-btn" onclick="openHistoryModal(
+                            '{{ item.analysis_type }}',
+                            '{{ item.job_title }}',
+                            '{{ item.company }}',
+                            '{{ item.email }}',
+                            '{{ item.phone }}',
+                            '{{ item.salary }}',
+                            '{{ item.fee }}',
+                            `{{ item.description|escapejs }}`,
+                            '{{ item.decision }}',
+                            '{{ item.confidence }}',
+                            `{{ item.reasons|escapejs }}`,
+                            `{{ item.justification|escapejs }}`
+                        )">
+                            View
+                        </button>
+
+                        <button class="delete-btn" onclick="deleteHistory(this, {{ item.id }})">
+                            Delete
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+<div class="pagination">
+
+    {% if analyses.has_previous %}
+        <a href="?page={{ analyses.previous_page_number }}&type={{ request.GET.type }}&status={{ request.GET.status }}&date={{ request.GET.date }}" class="page-btn nav-btn">‹</a>
+    {% else %}
+        <span class="page-btn disabled">‹</span>
+    {% endif %}
+
+    {% for num in analyses.paginator.page_range %}
+        {% if analyses.number == num %}
+            <span class="page-btn active">{{ num }}</span>
+        {% elif num >= analyses.number|add:'-2' and num <= analyses.number|add:'2' %}
+            <a href="?page={{ num }}&type={{ request.GET.type }}&status={{ request.GET.status }}&date={{ request.GET.date }}" class="page-btn">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+
+    {% if analyses.has_next %}
+        <a href="?page={{ analyses.next_page_number }}&type={{ request.GET.type }}&status={{ request.GET.status }}&date={{ request.GET.date }}" class="page-btn nav-btn">›</a>
+    {% else %}
+        <span class="page-btn disabled">›</span>
+    {% endif %}
+
+</div>
+</div>
+  
+
+    <!-- HISTORY VIEW MODAL -->
+
+    <div id="historyModal" class="modal hidden">
+
+        <div class="modal-content">
+
+            <h3>Job Analysis Result</h3>
+
+            <div class="modal-body" id="historyModalContent"></div>
+
+            <div class="modal-buttons">
+
+                <button class="cancel-btn" onclick="closeHistoryModal()">
+                    Close
+                </button>
+
+            </div>
+
+        </div>
+ 
+    </div>
+
+    <script>
+
+        /* ===== THEME ===== */
+
+        function toggleTheme() {
+
+            const isDark = document.body.classList.toggle("dark");
+
+            document.getElementById("toggleText").textContent =
+                isDark ? "Night mode" : "Day mode";
+
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+
+        }
+
+        if (localStorage.getItem("theme") === "dark") {
+            document.body.classList.add("dark");
+            document.getElementById("toggleText").textContent = "Night mode";
+        }
+
+
+        /* ===== MODAL ===== */
+        function openHistoryModal(
+            analysis_type,
+            title,
+            company,
+            email,
+            phone,
+            salary,
+            fee,
+            description,
+            decision,
+            confidence,
+            reasons,
+            justification
+        ) {
+
+            let reasonList = "";
+
+            try {
+
+                const parsed = JSON.parse(reasons || "[]");
+
+                reasonList = parsed.map(r => `<li>${r}</li>`).join("");
+
+            } catch {
+
+                reasonList = "<li>No indicators recorded</li>";
+
+            }
+
+            let extractedSection = "";
+
+if(analysis_type === "image"){
+extractedSection = `
+<h4>Extracted Text From Image</h4>
+<p style="white-space:pre-line;">${description}</p>
+<hr>
+`;
+}
+
+let contactSection = "";
+
+if(analysis_type === "text"){
+contactSection = `
+<p><strong>Email:</strong> ${email}</p>
+<p><strong>Phone:</strong> ${phone}</p>
+<p><strong>Salary:</strong> ${salary}</p>
+<p><strong>Payment Required:</strong> ${fee}</p>
+`;
+}
+
+const modalContent = `
+
+<h3>${analysis_type.toUpperCase()} Analysis Result</h3>
+
+<hr>
+
+<p><strong>Job Title:</strong> ${title}</p>
+<p><strong>Company:</strong> ${company}</p>
+
+${contactSection}
+
+<hr>
+
+${extractedSection}
+
+<h3>AI Decision: ${decision}</h3>
+
+<p><strong>Confidence:</strong> ${confidence}%</p>
+
+<h4>Fraud Indicators</h4>
+
+<ul>
+${reasonList}
+</ul>
+
+<h4>Justification</h4>
+
+<p>${justification}</p>
+
+`;
+
+            document.getElementById("historyModalContent").innerHTML = modalContent;
+
+            document.getElementById("historyModal").classList.remove("hidden");
+
+        }
+
+
+        function closeHistoryModal() {
+
+            document.getElementById("historyModal").classList.add("hidden");
+
+        }
+
+
+        /* ===== DELETE ===== */
+
+        function deleteHistory(button, id) {
+
+            fetch(`/delete-history/${id}/`, {
+                method: "POST",
+                headers: {
+                    "X-CSRFToken": getCSRFToken()
+                }
+            })
+                .then(res => res.json())
+                .then(data => {
+
+                    if (data.success) {
+
+                        const card = button.closest(".history-item");
+                        card.remove();
+
+                    }
+
+                });
+
+        }
+
+        function getCSRFToken() {
+
+            let cookieValue = null;
+
+            if (document.cookie && document.cookie !== "") {
+
+                const cookies = document.cookie.split(";");
+
+                for (let i = 0; i < cookies.length; i++) {
+
+                    const cookie = cookies[i].trim();
+
+                    if (cookie.substring(0, 10) === "csrftoken=") {
+
+                        cookieValue = decodeURIComponent(cookie.substring(10));
+                        break;
+
+                    }
+
+                }
+
+            }
+
+            return cookieValue;
+
+        }
+
+  lucide.createIcons();
+
+    </script>
+<script>
+// OPEN / CLOSE
+document.querySelectorAll(".custom-dropdown").forEach(drop => {
+
+  const selected = drop.querySelector(".dropdown-selected");
+  const options = drop.querySelectorAll(".dropdown-options div");
+
+  selected.addEventListener("click", () => {
+    document.querySelectorAll(".custom-dropdown").forEach(d => d.classList.remove("active"));
+    drop.classList.toggle("active");
+  });
+
+  options.forEach(option => {
+    option.addEventListener("click", () => {
+
+      selected.textContent = option.textContent;
+
+      // 🔥 STORE VALUE
+      drop.setAttribute("data-selected", option.getAttribute("data-value"));
+
+      drop.classList.remove("active");
+
+      applyFilters();   // ✅ NOW WORKS
+    });
+  });
+});
+
+// CLOSE WHEN CLICK OUTSIDE
+document.addEventListener("click", (e) => {
+  if(!e.target.closest(".custom-dropdown")){
+    document.querySelectorAll(".custom-dropdown").forEach(d => d.classList.remove("active"));
+  }
+});
+
+
+// 🔥 FILTER FUNCTION (OUTSIDE)
+function applyFilters(){
+
+  const dropdowns = document.querySelectorAll(".custom-dropdown");
+
+  const type = dropdowns[0].getAttribute("data-selected") || "";
+  const status = dropdowns[1].getAttribute("data-selected") || "";
+
+  let url = "/history?";
+
+  if(type !== "") url += "type=" + type + "&";
+  if(status !== "") url += "status=" + status + "&";
+
+  window.location.href = url;
+}
+
+const dateInput = document.getElementById("dateFilter");
+
+// default label
+dateInput.addEventListener("change", () => {
+  if(dateInput.value){
+    const [year, month] = dateInput.value.split("-");
+    
+    const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+    
+    dateInput.style.color = "#111";
+    dateInput.value = dateInput.value; // keep actual value
+  }
+});
+
+
+// 🔥 LOAD SELECTED FILTERS FROM URL
+window.addEventListener("DOMContentLoaded", () => {
+
+  const params = new URLSearchParams(window.location.search);
+
+  const type = params.get("type");
+  const status = params.get("status");
+
+  const dropdowns = document.querySelectorAll(".custom-dropdown");
+
+  if(type){
+    dropdowns[0].setAttribute("data-selected", type);
+    dropdowns[0].querySelector(".dropdown-selected").textContent = type.toUpperCase();
+  }
+
+  if(status){
+    dropdowns[1].setAttribute("data-selected", status);
+    dropdowns[1].querySelector(".dropdown-selected").textContent = status;
+  }
+
+});
+</script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RecruitSafe</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      --bg: #ffffff;
+      --text: #000000;
+      --subtext: #444;
+      --border: #000;
+      --btn-bg: #000;
+      --btn-text: #fff;
+
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s ease, color 0.3s ease;
+      margin-top: 24px;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #0e0e0e;
+      --text: #ffffff;
+      --subtext: #bbbbbb;
+      --border: #ffffff;
+      --btn-bg: #ffffff;
+      --btn-text: #000000;
+    }
+
+    /* Default icon color (light mode) */
+.toggle::before {
+  color: #000;
+  transition: color 0.3s ease;
+}
+
+/* Dark mode icon color */
+body[data-theme="dark"] .toggle::before {
+  color: #fff;   /* ☀ becomes white */
+}
+
+
+    /* ---------------- HEADER ---------------- */
+    header {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+  width: 100%;
+  margin-left: 40px; /* ⬅ moves whole header block right */
+}
+
+
+
+    /* Logo */
+    .logo {
+      position: absolute;
+      left: clamp(150px, 18vw, 330px);
+      font-size: 24px;
+      font-weight: 800;
+      white-space: nowrap;
+      padding-top: 5px;
+    }
+
+    /* Group: pill + toggle */
+    .nav-group {
+      display: flex;
+      align-items: center;
+      gap: clamp(32px, 5vw, 100px); /* spacing between navbar and toggle */
+    }
+
+    /* Nav pill */
+    .nav-pill {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      padding: 14px 36px;
+      border: 1.5px solid var(--border);
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .nav-pill a {
+      text-decoration: none;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    /* Theme toggle button */
+    .toggle {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+       margin-left: 15px; 
+    }
+
+    /* Theme icon via CSS (reliable) */
+    .toggle::before {
+      content: "☾"; /* light mode */
+      font-size: 16px;
+    }
+
+    body[data-theme="dark"] .toggle::before {
+      content: "☀"; /* dark mode */
+    }
+    
+
+    /* ---------------- HERO ---------------- */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 20px;
+      margin-top: 40px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      max-width: 680px;
+      font-size: 16px;
+      color: var(--subtext);
+      margin-bottom: 32px;
+    }
+
+    .btn-filled {
+      padding: 14px 32px;
+      border-radius: 999px;
+      border: none;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      cursor: pointer;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .arrow {
+      transition: transform 0.2s ease;
+    }
+
+    .btn-filled:hover .arrow {
+      transform: translateX(4px);
+    }
+
+    /* ---------------- RESPONSIVE ---------------- */
+    @media (max-width: 768px) {
+      .nav-pill {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body data-theme="light">
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">RecruitSafe</div>
+
+    <div class="nav-group">
+      <div class="nav-pill">
+        <a href="/how">How It Works</a>
+        <a href="/why">Why Us</a>
+        <a href="/help">Help</a>
+      </div>
+
+      <!-- EMPTY toggle button -->
+      <button class="toggle" id="themeToggle" aria-label="Toggle theme"></button>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <h1>Smart. Vigilant.<br>Secure.</h1>
+    <p>
+      Our platform analyzes thousands of job markers to flag fraudulent posts instantly.
+      Paste a link, get the truth, and apply with confidence.
+    </p>
+
+    <a href="/login">
+      <button class="btn-filled">
+        Get Started <span class="arrow">→</span>
+      </button>
+    </a>
+  </section>
+
+  <!-- THEME TOGGLE SCRIPT -->
+  <script>
+    const toggleBtn = document.getElementById("themeToggle");
+    const body = document.body;
+
+    toggleBtn.addEventListener("click", () => {
+      const isDark = body.getAttribute("data-theme") === "dark";
+      body.setAttribute("data-theme", isDark ? "light" : "dark");
+    });
+  </script>
+
+</body>
+</html>

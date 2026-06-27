@@ -1,0 +1,1627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Analyze Jobs | RecruitSafe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+min-height:100vh;
+background:#F7F8FA;
+display:flex;
+}
+
+/* ---------------- MODAL OVERLAY ---------------- */
+
+.modal{
+
+position:fixed;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(0,0,0,0.45);
+
+backdrop-filter:blur(6px);
+
+z-index:9999;
+
+}
+
+
+/* ---------------- MODAL BOX ---------------- */
+
+/* MODAL BOX */
+
+.modal-content{
+
+background:#ffffff;
+
+width:720px;
+max-width:90%;
+
+max-height:80vh;
+
+display:flex;
+flex-direction:column;
+
+padding:28px;
+
+border-radius:18px;
+
+box-shadow:0 30px 70px rgba(0,0,0,0.25);
+
+border:1px solid #E5E7EB;
+
+animation:modalFade 0.25s ease;
+
+}
+
+
+/* MODAL HEADINGS */
+
+.modal-content h3{
+
+font-size:22px;
+
+margin-bottom:14px;
+
+font-weight:700;
+
+}
+
+
+.modal-content h4{
+
+margin-top:14px;
+
+font-size:16px;
+
+font-weight:600;
+
+color:#374151;
+
+}
+
+
+/* DIVIDER */
+
+.modal-content hr{
+
+border:none;
+
+height:1px;
+
+background:#E5E7EB;
+
+margin:14px 0;
+
+}
+
+
+/* TEXT STYLE */
+
+.modal-content p{
+
+font-size:14px;
+
+margin-bottom:6px;
+
+color:#374151;
+
+}
+
+
+.modal-content strong{
+
+color:#111827;
+
+}
+
+
+/* LIST STYLE */
+
+.modal-content ul{
+
+margin-top:6px;
+
+padding-left:18px;
+
+}
+
+.modal-content li{
+
+margin-bottom:4px;
+
+font-size:14px;
+
+color:#374151;
+
+}
+
+
+/* BUTTONS */
+
+.modal-buttons{
+
+margin-top:18px;
+
+display:flex;
+
+gap:12px;
+
+justify-content:flex-end;
+
+flex-shrink:0;
+
+}
+
+.modal-body{
+
+overflow-y:auto;
+
+max-height:55vh;
+
+padding-right:6px;
+
+margin-top:10px;
+
+flex:1;
+
+}
+
+
+.save-btn{
+
+background:#000;
+
+color:#fff;
+
+border:none;
+
+padding:10px 20px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:all 0.2s;
+
+}
+
+.save-btn:hover{
+
+background:#111;
+
+transform:translateY(-1px);
+
+}
+
+
+.cancel-btn{
+
+background:#fff;
+
+border:1px solid #D1D5DB;
+
+padding:10px 20px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:600;
+
+transition:all 0.2s;
+
+}
+
+.cancel-btn:hover{
+
+background:#F3F4F6;
+
+}
+
+
+/* MODAL ANIMATION */
+
+@keyframes modalFade{
+
+from{
+opacity:0;
+transform:translateY(-15px);
+}
+
+to{
+opacity:1;
+transform:translateY(0);
+}
+
+}
+
+
+/* MODAL BUTTONS */
+
+.modal-buttons{
+
+margin-top:24px;
+
+display:flex;
+gap:12px;
+
+}
+
+.save-btn{
+
+background:#000;
+color:#fff;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+.cancel-btn{
+
+background:#fff;
+border:1px solid #000;
+
+padding:10px 18px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+font-weight:600;
+
+}
+
+.save-btn:hover{
+background:#111;
+}
+
+.cancel-btn:hover{
+background:#F3F4F6;
+}
+
+
+/* ---------------- SIDEBAR ---------------- */
+
+.sidebar{
+
+width:240px;
+
+background:#fff;
+
+padding:30px 20px;
+
+display:flex;
+flex-direction:column;
+
+margin:20px;
+
+border-radius:28px;
+
+box-shadow:0 12px 30px rgba(0,0,0,0.08);
+
+}
+
+.logo{
+
+font-size:22px;
+font-weight:800;
+
+margin-bottom:40px;
+
+padding-left:35px;
+padding-top:8px;
+
+}
+
+.nav a{
+
+display:block;
+
+padding:12px 16px;
+
+margin-bottom:8px;
+
+border-radius:14px;
+
+text-decoration:none;
+
+color:#111;
+
+font-weight:600;
+font-size:14px;
+
+}
+
+.nav a.active,
+.nav a:hover{
+
+background:#F3F4F6;
+
+}
+
+.sidebar-footer{
+margin-top:auto;
+}
+
+
+/* ---------------- MAIN CONTENT ---------------- */
+
+.analyze-content{
+
+max-width:900px;
+
+margin:40px 0;
+
+padding-top:35px;
+padding-left:40px;
+
+}
+
+.analyze-content h2{
+
+font-size:26px;
+font-weight:800;
+
+margin-bottom:6px;
+
+}
+
+
+/* ---------------- TABS ---------------- */
+
+.tabs{
+
+display:flex;
+
+gap:12px;
+
+margin-top:30px;
+margin-bottom:24px;
+
+}
+
+.tab{
+
+padding:10px 22px;
+
+border-radius:999px;
+
+border:1.5px solid #D1D5DB;
+
+background:transparent;
+
+font-weight:600;
+
+cursor:pointer;
+
+}
+
+.tab.active{
+
+background:#000;
+color:#fff;
+
+border-color:#000;
+
+}
+
+
+/* ---------------- GRID FORM ---------------- */
+
+.grid-fields{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:20px;
+
+width:100%;
+
+}
+
+.form-group{
+
+display:flex;
+
+flex-direction:column;
+
+}
+
+.form-group label{
+
+font-weight:600;
+
+margin-bottom:6px;
+
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea{
+
+padding:12px;
+
+border-radius:10px;
+
+border:1px solid #ccc;
+
+}
+
+.full-width{
+
+grid-column:span 2;
+
+margin-top:15px;
+
+}
+
+textarea{
+
+height:130px;
+
+resize:none;
+
+}
+
+
+/* ---------------- FILE UPLOAD ---------------- */
+
+.upload-box{
+
+border:2px dashed #D1D5DB;
+
+border-radius:16px;
+
+padding:50px;
+
+text-align:center;
+
+cursor:pointer;
+
+background:#FAFAFB;
+
+transition:all 0.25s ease;
+
+position:relative;
+
+}
+
+.upload-box:hover{
+
+background:#F3F4F6;
+
+border-color:#9CA3AF;
+
+}
+
+.upload-icon{
+
+font-size:26px;
+
+margin-bottom:10px;
+
+}
+
+.upload-text{
+
+font-weight:600;
+font-size:15px;
+
+margin-bottom:4px;
+
+}
+
+.upload-subtext{
+
+font-size:13px;
+
+color:#6B7280;
+
+}
+
+.upload-box input{
+
+display:none;
+
+}
+
+.file-name{
+
+margin-top:10px;
+
+font-size:14px;
+
+color:#374151;
+
+}
+
+
+/* ---------------- BUTTON ---------------- */
+
+.analyze-btn{
+
+margin-top:32px;
+
+padding:14px 32px;
+
+border-radius:999px;
+
+border:none;
+
+background:#000;
+
+color:#fff;
+
+font-weight:600;
+
+cursor:pointer;
+
+}
+
+.hidden{
+display:none!important;
+}
+
+.nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav a i {
+  width: 18px;
+  height: 18px;
+  color: #111;
+}
+
+.input-box{
+    margin-left: 40px;
+    margin-top: 10px;
+}
+
+.analyze-btn{
+    margin-left: 40px;   /* align with form */
+    margin-top: 30px;
+}
+/* TOGGLE CONTAINER */
+.theme-toggle{
+  width:170px;
+  height:44px;
+  border-radius:999px;
+  background:#E5E7EB;
+
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+
+  padding:6px 10px;
+  gap:10px;
+
+  cursor:pointer;
+  transition:0.3s;
+}
+
+/* circle */
+.toggle-circle{
+  width:32px;
+  height:32px;
+  border-radius:50%;
+  background:#fff;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  flex-shrink:0;   /* 🔥 VERY IMPORTANT */
+  transition:0.3s;
+}
+
+/* text */
+.toggle-text{
+  font-size:14px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+/* DARK MODE */
+body.dark-theme .theme-toggle{
+  background:#444;
+  justify-content:flex-end;   /* 🔥 THIS FIXES SLIDE */
+}
+
+body.dark-theme .toggle-text{
+  color:#fff;
+}
+.toggle-circle svg{
+  width:16px;
+  height:16px;
+}
+
+/* default */
+#moonIcon{
+  display:none;
+}
+
+/* dark mode */
+body.dark-theme #sunIcon{
+  display:none;
+}
+
+body.dark-theme #moonIcon{
+  display:block;
+}
+
+/* tabs default */
+.tab{
+  color:#111;
+}
+
+/* dark mode fix */
+body.dark-theme .tab{
+  color:#9CA3AF;
+  border-color:#26262E;
+}
+
+body.dark-theme .tab.active{
+  background:#fff;
+  color:#000;
+}
+
+/* ================= DARK MODE FULL FIX ================= */
+
+body.dark-theme{
+  background:#020203;
+  color:#F5F5F7;
+}
+
+/* sidebar */
+body.dark-theme .sidebar{
+  background:#1C1C22;
+  border:1px solid #26262E;
+  box-shadow:none;
+}
+
+/* nav */
+body.dark-theme .nav a{
+  color:#9CA3AF;
+}
+
+body.dark-theme .nav a.active,
+body.dark-theme .nav a:hover{
+  background:#26262E;
+  color:#F5F5F7;
+}
+
+/* headings */
+body.dark-theme h2{
+  color:#F5F5F7;
+}
+
+body.dark-theme p{
+  color:#9CA3AF;
+}
+
+/* inputs */
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea{
+  background:#141418;
+  border:1px solid #26262E;
+  color:#F5F5F7;
+}
+
+/* placeholder */
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder{
+  color:#9CA3AF;
+}
+
+/* tabs */
+body.dark-theme .tab{
+  background:#141418;
+  border-color:#26262E;
+  color:#9CA3AF;
+}
+
+body.dark-theme .tab.active{
+  background:#ffffff;
+  color:#000;
+}
+
+/* upload box */
+body.dark-theme .upload-box{
+  background:#141418;
+  border-color:#26262E;
+}
+
+/* button */
+body.dark-theme .analyze-btn{
+  background:#ffffff;
+  color:#000;
+}
+
+body.dark-theme .theme-toggle{
+  justify-content: space-between;
+}
+body.dark-theme #sunIcon{
+  display:none !important;
+}
+
+body.dark-theme #moonIcon{
+  display:block !important;
+}
+
+/* --------------------------------------------------------------------------------------------- */
+
+/* ================= FINAL AESTHETIC REPORT UI ================= */
+
+.result-card {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #E5E7EB;
+    padding: 22px 0;
+    margin-bottom: 8px;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+/* remove old black line */
+.result-card::before {
+    display: none;
+}
+
+/* cleaner headings */
+
+.result-card h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 14px;
+    letter-spacing: -0.3px;
+}
+
+/* AI decision badge */
+
+.decision-badge {
+    display: inline-block;
+    padding: 10px 24px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 12px 0;
+}
+
+.badge-fraud {
+    background: #FEE2E2;
+    color: #DC2626;
+}
+
+.badge-suspicious {
+    background: #FEF3C7;
+    color: #D97706;
+}
+
+.badge-genuine {
+    background: #DCFCE7;
+    color: #16A34A;
+}
+
+/* PREMIUM COLORFUL CONFIDENCE BAR */
+
+.confidence-bar {
+    width: 100%;
+    height: 10px;
+    background: #E5E7EB;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 14px;
+}
+
+.confidence-fill {
+    height: 100%;
+    border-radius: 999px;
+}
+
+/* dynamic color classes */
+
+.confidence-green {
+    background: linear-gradient(to right, #22C55E, #16A34A);
+}
+
+.confidence-orange {
+    background: linear-gradient(to right, #F59E0B, #D97706);
+}
+
+.confidence-red {
+    background: linear-gradient(to right, #EF4444, #DC2626);
+}
+
+/* top risk words */
+
+.risk-pill {
+    display: inline-block;
+    background: #F8FAFC;
+    border: 1px solid #D1D5DB;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+    margin: 6px 8px 0 0;
+}
+
+/* proper clean table */
+
+/* ================= PROFESSIONAL TABLE ================= */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 18px;
+    border: 1px solid #D1D5DB;
+    background: #ffffff;
+}
+
+table th {
+    background: #F3F4F6;
+    color: #111827;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 14px;
+    text-align: left;
+    border: 1px solid #D1D5DB;
+}
+
+table td {
+    padding: 14px;
+    font-size: 14px;
+    color: #111827;
+    border: 1px solid #E5E7EB;
+    vertical-align: middle;
+}
+
+table tr:nth-child(even) td {
+    background: #FAFAFA;
+}
+
+table tr:hover td {
+    background: #F9FAFB;
+}
+
+/* score text */
+
+.score-badge {
+    font-weight: 700;
+    color: #111827;
+}
+
+/* modal title */
+
+.modal-content h3 {
+    font-size: 34px;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+/* buttons */
+
+.save-btn {
+    background: #111827;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.cancel-btn {
+    background: white;
+    border: 1px solid #D1D5DB;
+    padding: 12px 24px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+</style>
+</head>
+
+<body>
+
+<aside class="sidebar">
+
+<div class="logo">RecruitSafe</div>
+
+<nav class="nav">
+
+<a href="/dashboard" class="{% if request.path == '/dashboard' %}active{% endif %}">
+  <i data-lucide="home"></i>
+  Dashboard
+</a>
+
+<a href="/manage-users" class="{% if request.path == '/manage-users' %}active{% endif %}">
+  <i data-lucide="users"></i>
+  Manage Users
+</a>
+
+<a href="/analyze" class="{% if request.path == '/analyze' %}active{% endif %}">
+  <i data-lucide="search"></i>
+  Analyze Jobs
+</a>
+
+<a href="/history" class="{% if request.path == '/history' %}active{% endif %}">
+  <i data-lucide="clock"></i>
+  History
+</a>
+
+<a href="/settings" class="{% if request.path == '/settings' %}active{% endif %}">
+  <i data-lucide="settings"></i>
+  Settings
+</a>
+
+</nav>
+
+<div class="sidebar-footer">
+
+  <div class="theme-toggle" onclick="toggleTheme()">
+
+    <div class="toggle-circle">
+      <i data-lucide="sun" id="sunIcon"></i>
+      <i data-lucide="moon" id="moonIcon"></i>
+    </div>
+
+    <span class="toggle-text" id="toggleText">Day mode</span>
+
+  </div>
+
+</div>
+
+</aside>
+
+<div class="main">
+  <div class="analyze-content">
+
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+<h2>Analyze Job Posts</h2>
+<p>Paste a job description, upload an image, or provide a link to check for fraud indicators.</p>
+
+<div class="tabs">
+<button class="tab active" onclick="switchTab('text')">Text</button>
+<button class="tab" onclick="switchTab('image')">Image</button>
+<button class="tab" onclick="switchTab('link')">Link</button>
+</div>
+  </div>
+<!-- TEXT SECTION -->
+
+<div class="input-box" id="textInput">
+
+<div class="grid-fields">
+
+<div class="form-group">
+<label>Job Title</label>
+<input type="text" id="jobTitle" placeholder="Example: Data Entry Work From Home">
+</div>
+
+
+<div class="form-group">
+<label>Company Name</label>
+<input type="text" id="companyName" placeholder="Enter company name">
+</div>
+
+<div class="form-group">
+<label>Email Address</label>
+<input type="email" id="email" placeholder="Enter email address">
+</div>
+
+<div class="form-group">
+<label>Phone Number</label>
+<input type="text" id="phone" placeholder="Enter phone number">
+</div>
+
+<div class="form-group">
+<label>Salary Offered</label>
+<input type="text" id="salary" placeholder="Enter salary amount or range">
+</div>
+
+<div class="form-group">
+<label>Does the job ask for payment?</label>
+<select id="fee">
+<option>No</option>
+<option>Yes</option>
+</select>
+</div>
+
+</div>
+
+<div class="form-group full-width">
+<label>Job Description</label>
+<textarea id="description"></textarea>
+</div>
+
+</div>
+
+
+<!-- IMAGE SECTION -->
+
+<div class="input-box hidden" id="imageInput">
+
+<!-- Upload Image -->
+
+<div class="upload-box" onclick="document.getElementById('imageFile').click()">
+
+<div style="font-size:26px;margin-bottom:10px;">📷</div>
+
+<p style="font-weight:600;margin-bottom:4px;">
+Upload job poster or screenshot
+</p>
+
+<span style="font-size:13px;color:#6B7280;">
+PNG, JPG, JPEG
+</span>
+
+<input type="file" id="imageFile" accept="image/*" style="display:none;">
+
+</div>
+
+<p id="fileName" class="hidden"></p>
+
+</div>
+
+
+<!-- LINK SECTION -->
+
+<div class="input-box hidden" id="linkInput">
+
+<div class="form-group full-width">
+<label>Paste Job Post Link</label>
+<input type="url" id="jobLink" placeholder="https://example.com/job-post">
+<p style="font-size:12px;color:#6B7280;margin-top:6px;">
+Supported sites: LinkedIn, Indeed, Naukri, company career pages
+</p>
+</div>
+</div>
+<button class="analyze-btn" onclick="analyzeJob()">Analyze Job</button>
+<div class="result hidden" id="resultBox"></div>
+</div>
+<script>
+
+/* ---------------- CSRF TOKEN ---------------- */
+
+function getCSRFToken(){
+return document.querySelector('[name=csrfmiddlewaretoken]').value;
+}
+
+
+/* ---------------- MODAL FUNCTIONS ---------------- */
+
+function closeModal(){
+document.getElementById("resultModal").classList.add("hidden");
+}
+
+
+/* ---------------- SAVE RESULT ---------------- */
+
+function saveResult(){
+
+const title =
+window.lastTitle ||
+document.getElementById("jobTitle")?.value ||
+document.getElementById("linkTitle")?.value ||
+"Image Job Poster";
+
+const company =
+window.lastCompany ||
+document.getElementById("companyName")?.value ||
+document.getElementById("linkCompany")?.value ||
+"Unknown Company";
+
+const email =
+document.getElementById("email")?.value ||
+document.getElementById("linkEmail")?.value ||
+"";
+
+const phone =
+document.getElementById("phone")?.value || "";
+
+const salary =
+document.getElementById("salary")?.value || "";
+
+const fee =
+document.getElementById("fee")?.value || "";
+
+const description =
+window.lastExtractedText ||
+document.getElementById("description")?.value ||
+"";
+
+
+const data = {
+
+title: title,
+company: company,
+email: email,
+phone: phone,
+
+salary: salary,
+fee: fee,
+description: description,
+
+decision: window.lastDecision,
+confidence: window.lastConfidence,
+
+analysis_type: window.lastAnalysisType,
+
+reasons: window.lastReasons,
+justification: window.lastJustification
+
+};
+
+
+fetch("/save-analysis",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken": getCSRFToken()
+},
+
+body: JSON.stringify(data)
+
+})
+.then(res=>res.json())
+.then(data=>{
+
+alert("Saved to history");
+
+closeModal();
+
+});
+
+}
+
+
+
+/* ---------------- TAB SWITCHING ---------------- */
+
+function switchTab(type){
+
+const tabs=document.querySelectorAll(".tab");
+
+tabs.forEach(t=>t.classList.remove("active"));
+
+document.getElementById("textInput").classList.add("hidden");
+document.getElementById("imageInput").classList.add("hidden");
+document.getElementById("linkInput").classList.add("hidden");
+
+
+if(type==="text"){
+document.getElementById("textInput").classList.remove("hidden");
+tabs[0].classList.add("active");
+}
+
+if(type==="image"){
+document.getElementById("imageInput").classList.remove("hidden");
+tabs[1].classList.add("active");
+}
+
+if(type==="link"){
+document.getElementById("linkInput").classList.remove("hidden");
+tabs[2].classList.add("active");
+}
+
+}
+
+
+
+/* ---------------- ANALYZE FUNCTION ---------------- */
+
+function analyzeJob(){
+
+
+/* TEXT TAB */
+
+if(!document.getElementById("textInput").classList.contains("hidden")){
+
+const title=document.getElementById("jobTitle").value.trim();
+const company=document.getElementById("companyName").value.trim();
+const email=document.getElementById("email").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const salary=document.getElementById("salary").value.trim();
+const fee=document.getElementById("fee").value;
+const description=document.getElementById("description").value.trim();
+
+if(description.length===0){
+alert("Please enter job description");
+return;
+}
+
+const data={
+title:title,
+company:company,
+email:email,
+phone:phone,
+salary:salary,
+fee:fee,
+description:description
+};
+
+fetch("/analyze-text",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken": getCSRFToken()
+},
+body:JSON.stringify(data)
+})
+.then(res=>res.json())
+.then(data=>displayResult(data))
+.catch(()=>alert("Text analysis failed"));
+
+return;
+
+}
+
+
+
+/* IMAGE TAB */
+
+if(!document.getElementById("imageInput").classList.contains("hidden")){
+
+const file=document.getElementById("imageFile").files[0];
+
+if(!file){
+alert("Please upload an image");
+return;
+}
+
+const formData=new FormData();
+formData.append("image",file);
+
+fetch("/analyze-image",{
+method:"POST",
+headers:{
+"X-CSRFToken": getCSRFToken()
+},
+body:formData
+})
+.then(res=>res.json())
+.then(data=>displayResult(data))
+.catch(()=>alert("Image analysis failed"));
+
+return;
+
+}
+
+
+
+/* LINK TAB */
+
+if(!document.getElementById("linkInput").classList.contains("hidden")){
+
+const link=document.getElementById("jobLink").value.trim();
+
+if(link.length===0){
+alert("Please paste job link");
+return;
+}
+
+const data={
+link:link
+};
+
+fetch("/analyze-link",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken": getCSRFToken()
+},
+body:JSON.stringify(data)
+})
+.then(res=>res.json())
+.then(data=>displayResult(data))
+.catch(()=>alert("Link analysis failed"));
+
+}
+
+}
+
+
+
+/* ---------------- DISPLAY RESULT ---------------- */
+
+function displayResult(data){
+
+    window.lastDecision = data.final_decision;
+    window.lastConfidence = data.confidence;
+
+    window.lastReasons = data.rule_based?.reasons || [];
+    window.lastXAIExplanation = data.xai_explanation || "";
+    window.lastImportantWords = data.important_words || [];
+
+    window.lastTitle = data.title || "";
+    window.lastExtractedText = data.extracted_text || "";
+    window.lastCompany = data.company || "";
+
+    /* analysis type */
+    if(data.analysis_type){
+        window.lastAnalysisType = data.analysis_type;
+    }
+    else if(data.extracted_text){
+        window.lastAnalysisType = "image";
+    }
+    else if(data.company || data.title){
+        window.lastAnalysisType = "link";
+    }
+    else{
+        window.lastAnalysisType = "text";
+    }
+
+    let extractedTextSection = "";
+
+    if(data.extracted_text){
+
+        extractedTextSection = `
+
+        <h4>Extracted Text From Image</h4>
+        <p style="white-space:pre-line;">
+            ${data.extracted_text}
+        </p>
+
+        <hr>
+
+        `;
+    }
+    
+
+    const decisionClass =
+    data.final_decision === "Fraud"
+        ? "badge-fraud"
+        : data.final_decision === "Suspicious"
+        ? "badge-suspicious"
+        : "badge-genuine";
+
+const confidenceWidth = parseFloat(data.confidence || 0);
+const confidenceClass =
+    data.final_decision === "Fraud"
+        ? "confidence-red"
+        : data.final_decision === "Suspicious"
+        ? "confidence-orange"
+        : "confidence-green";
+
+const riskPills = (data.important_words || []).map(item => `
+    <span class="risk-pill">
+        ${item.word}
+    </span>
+`).join("");
+
+
+    const modalHTML = `
+
+    <h3 style="
+font-size:30px;
+font-weight:800;
+margin-bottom:8px;
+color:#111827;
+">
+Job Analysis Result
+</h3>
+
+<p style="
+font-size:14px;
+color:#6B7280;
+margin-bottom:18px;
+font-weight:500;
+">
+Analysis Type: ${data.analysis_type ? data.analysis_type.toUpperCase() : "TEXT"}
+</p>
+
+    <hr>
+
+    ${!data.extracted_text ? `
+
+        <p><strong>Job Title:</strong> ${data.title || "Not Provided"}</p>
+
+        <p><strong>Company:</strong> ${data.company || "Not Provided"}</p>
+
+    ` : `
+
+        <p><strong>Job Title:</strong> ${data.title || "Extracted from Image"}</p>
+
+        <p><strong>Company:</strong> Extracted from OCR</p>
+
+    `}
+
+    <hr>
+
+    ${extractedTextSection}
+
+    <div class="result-card">
+
+    <h3>AI Decision</h3>
+
+    <div class="decision-badge ${decisionClass}">
+        ${data.final_decision}
+    </div>
+
+    <p>
+        <strong>Confidence Score:</strong> ${data.confidence}%
+    </p>
+
+    <div class="confidence-bar">
+        <div
+    class="confidence-fill ${confidenceClass}"
+    style="width:${confidenceWidth}%">
+        </div>
+    </div>
+
+</div>
+
+
+<div class="result-card">
+
+    <h4>Why Model Gave This Result</h4>
+
+    <p>
+        ${data.xai_explanation || "The model analyzed the posting using contextual fraud detection and explainable AI signals."}
+    </p>
+
+</div>
+
+
+<div class="result-card">
+
+    <h4>SHAP Analysis</h4>
+
+    <p>
+        ${data.shap_summary || "No strong fraud-driving keywords detected."}
+    </p>
+
+</div>
+
+
+<div class="result-card">
+
+    <h4>Top Risk Words</h4>
+
+    ${riskPills || "No major risk indicators found"}
+
+</div>
+
+
+<div class="result-card">
+
+    <h4>SHAP Score Table</h4>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Risk Word</th>
+                <th>Impact Score</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            ${(data.important_words || []).length > 0
+                ? data.important_words.map(item => `
+                    <tr>
+                        <td>${item.word}</td>
+                        <td>+${item.score}</td>
+                    </tr>
+                `).join("")
+                : `
+                    <tr>
+                        <td colspan="2">
+                            No strong fraud indicators detected
+                        </td>
+                    </tr>
+                `
+            }
+        </tbody>
+    </table>
+
+</div>
+
+    <h4>LIME Context Analysis</h4>
+
+    <p>
+        ${data.lime_summary || "LIME contextual analysis did not detect suspicious surrounding phrase combinations."}
+    </p>
+
+    `;
+
+    document.getElementById("modalDetails").innerHTML = modalHTML;
+
+    document.getElementById("resultModal").classList.remove("hidden");
+}
+
+
+/* ---------------- SHOW IMAGE NAME ---------------- */
+
+document.getElementById("imageFile").addEventListener("change", function(){
+
+const file=this.files[0];
+
+if(file){
+
+const nameBox=document.getElementById("fileName");
+
+nameBox.textContent="Selected: "+file.name;
+
+nameBox.classList.remove("hidden");
+
+}
+
+});
+
+</script>
+<!-- RESULT MODAL -->
+
+<div id="resultModal" class="modal hidden">
+
+<div class="modal-content">
+
+<div class="modal-body" id="modalDetails"></div>
+
+<div class="modal-buttons">
+
+<button class="save-btn" onclick="saveResult()">Save</button>
+
+<button class="cancel-btn" onclick="closeModal()">Cancel</button>
+
+</div>
+
+</div>
+
+</div>
+<script>
+    function toggleTheme(){
+  const isDark = document.body.classList.toggle("dark-theme");
+
+  document.getElementById("toggleText").textContent =
+    isDark ? "Night mode" : "Day mode";
+
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+}
+
+/* Load saved theme */
+if(localStorage.getItem("theme") === "dark"){
+  document.body.classList.add("dark-theme");
+  document.getElementById("toggleText").textContent = "Night mode";
+}
+  lucide.createIcons();
+</script>
+</body>
+</html>
